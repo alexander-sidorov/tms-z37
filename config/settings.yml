@@ -8,6 +8,7 @@ default:
   DIRS_RESOURCES:
     - config
     - scripts
+    - static
   DIRS_SOURCES:
     - src
   DIRS_TEMPLATES: [ ]
