@@ -1,23 +1,45 @@
+from framework.consts import DIR_STATIC
+
+
 def application(environ, start_response):
-    status = "200 OK"
-    headers = {
-        "Content-type": "text/html",
-    }
-    payload = (
-        b"<!DOCTYPE html>"
-        b"<html>"
-        b"<head>"
-        b"<title>Z37</title>"
-        b'<meta charset="utf-8">'
-        b"</head>"
-        b"<body>"
-        b"<h1>Z37 study project</h1>"
-        b"<hr>"
-        b"<p>This is a study project.</p>"
-        b"</body>"
-        b"</html>"
-    )
+    url = environ["PATH_INFO"]
+    if url == "/xxx/":
+        status = "200 OK"
+        headers = {
+            "Content-type": "text/css",
+        }
+        payload = read_from_styles_css()
+        start_response(status, list(headers.items()))
 
-    start_response(status, list(headers.items()))
+        yield payload
+    else:
+        status = "200 OK"
+        headers = {
+            "Content-type": "text/html",
+        }
 
-    yield payload
+        payload = read_from_index_html()
+
+        start_response(status, list(headers.items()))
+
+        yield payload
+
+
+def read_from_index_html():
+    path = DIR_STATIC / "index.html"
+
+    with path.open("r") as fp:
+        payload = fp.read()
+
+    payload = payload.encode()
+    return payload
+
+
+def read_from_styles_css():
+    path = DIR_STATIC / "styles.css"
+
+    with path.open("r") as fp:
+        payload = fp.read()
+
+    payload = payload.encode()
+    return payload
