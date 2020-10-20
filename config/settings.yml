@@ -15,7 +15,7 @@ default:
   MODE_DEBUG: true
   MODE_PROFILING: false
   PORT: -1
-  PROJECT_NAME: "tms-z37"
+  PROJECT_NAME: ""
   TEMPLATE_ENGINE: "Django"
   VENV_SYNTHETIC: false
   WEB_CONCURRENCY: 0
