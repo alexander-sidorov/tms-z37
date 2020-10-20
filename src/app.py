@@ -2,7 +2,7 @@ from wsgiref.simple_server import make_server
 
 from framework import settings
 from framework.consts import SERVER_RUNNING_BANNER
-from framework.wsgi import application as app2
+from framework.wsgi import application
 
 
 def run():
