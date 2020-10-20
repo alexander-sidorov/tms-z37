@@ -25,5 +25,9 @@ def validate_content(page: MainPage):
     assert page.p.tag_name == "p"
     assert page.p.text == "This is a study project."
 
+    assert page.h12.text == "Second header"
+
+    assert page.logo.get_attribute("alt") == "logo"
+
     html = page.html
     assert "<hr>" in html

@@ -5,5 +5,7 @@ from .abstract import PageObject
 
 
 class MainPage(PageObject):
-    h1 = PageElement(By.CSS_SELECTOR, "h1")
+    h1 = PageElement(By.XPATH, "/html/body/h1[1]")
+    h12 = PageElement(By.XPATH, "/html/body/h1[2]")
     p = PageElement(By.CSS_SELECTOR, "p")
+    logo = PageElement(By.CSS_SELECTOR, "img")
