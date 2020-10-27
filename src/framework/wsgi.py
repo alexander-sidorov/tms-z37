@@ -1,53 +1,59 @@
 import random
 import re
 from html import escape
-from mimetypes import guess_type
 from typing import Any
 from typing import Callable
+from typing import Dict
 from typing import Tuple
 
 from framework.consts import DIR_STATIC
 
 
 def application(environ, start_response):
-    url = environ["PATH_INFO"]
-
-    file_names = {
-        "/xxx/": "styles.css",
-        "/logo.png/": "logo.png",
-        "/": "index.html",
+    handlers = {
+        "/": handle_index,
     }
 
-    file_name = file_names.get(url)
+    url = environ["PATH_INFO"]
 
-    if file_name is not None:
-        status = "200 OK"
-        headers = {
-            "Content-type": guess_type(file_name)[0],
-        }
-        payload = read_static(file_name)
-    else:
-        status = "404 Not Found"
-        headers = {
-            "Content-type": "text/html",
-        }
-        payload = generate_404(environ)
+    handler = handlers.get(url, handle_404)
+
+    status = "200 OK"
+    headers = {
+        "Content-type": "text/html",
+    }
+    payload = handler(environ)
 
     start_response(status, list(headers.items()))
 
     yield payload
 
 
-def read_static(file_name: str) -> bytes:
+def read_static(file_name: str, converter: Callable = bytes) -> Any:
     path = DIR_STATIC / file_name
 
-    with path.open("rb") as fp:
+    modes: Dict[Any, str] = {
+        str: "r",
+    }
+
+    mode = modes.get(converter, "rb")
+
+    with path.open(mode) as fp:
         payload = fp.read()
 
-    return payload
+    return converter(payload)
 
 
-def generate_404(environ) -> bytes:
+def handle_index(_environ) -> bytes:
+    base_html = read_static("_base.html", str)
+    index_html = read_static("index.html", str)
+
+    result = base_html.format(xxx=index_html)
+
+    return result.encode()
+
+
+def handle_404(environ) -> bytes:
     url = environ["PATH_INFO"]
     pin = random.randint(1, 999999)
 
@@ -59,17 +65,10 @@ def generate_404(environ) -> bytes:
         for env_var_name, env_var_value in sorted(environ.items(), key=http_first)
     )
 
-    msg = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Z37 :: Not found</title>
-          <meta charset="utf-8">
-          <link href="/xxx/" rel="stylesheet"/>
-          <link href="/logo.png/" rel="shortcut icon" type="image/png"/>
-        </head>
-        <body>
-        <h1>OOPS!</h1>
+    base_html = read_static("_base.html", str)
+
+    html_404 = f"""
+    <h1>OOPS!</h1>
         <hr>
         <h2>The path you've looking for does not exist on this server.</h2>
         <p class="url"><span>{url}</span></p>
@@ -77,11 +76,11 @@ def generate_404(environ) -> bytes:
         <div class="environ-table">
         {environ_pairs}
         <div>
-        </body>
-        </html>
     """
 
-    return msg.encode()
+    document = base_html.format(xxx=html_404)
+
+    return document.encode()
 
 
 def http_first(value: Tuple[str, Any]) -> tuple:
