@@ -1,7 +1,7 @@
-from handlers.index import handle_index
-from handlers.logo import handle_logo
-from handlers.not_found import handle_404
-from handlers.styles import handle_styles
+from handlers import handle_index
+from handlers import handle_logo
+from handlers import handle_styles
+from handlers import system_handlers
 
 handlers = {
     "/": handle_index,
@@ -13,7 +13,7 @@ handlers = {
 def application(environ, start_response):
     url = environ["PATH_INFO"]
 
-    handler = handlers.get(url, handle_404)
+    handler = handlers.get(url, system_handlers.handle_404)
 
     status, headers, payload = handler(environ)
 
