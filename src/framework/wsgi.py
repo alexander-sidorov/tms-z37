@@ -1,32 +1,22 @@
-from mimetypes import guess_type
+from handlers.index import handle_index
+from handlers.logo import handle_logo
+from handlers.not_found import handle_404
+from handlers.styles import handle_styles
 
-from framework.consts import DIR_STATIC
+handlers = {
+    "/": handle_index,
+    "/logo.png/": handle_logo,
+    "/xxx/": handle_styles,
+}
 
 
 def application(environ, start_response):
     url = environ["PATH_INFO"]
 
-    file_names = {
-        "/xxx/": "styles.css",
-        "/logo.png/": "logo.png",
-    }
+    handler = handlers.get(url, handle_404)
 
-    file_name = file_names.get(url, "index.html")
+    status, headers, payload = handler(environ)
 
-    status = "200 OK"
-    headers = {
-        "Content-type": guess_type(file_name)[0],
-    }
-    payload = read_static(file_name)
     start_response(status, list(headers.items()))
 
     yield payload
-
-
-def read_static(file_name: str) -> bytes:
-    path = DIR_STATIC / file_name
-
-    with path.open("rb") as fp:
-        payload = fp.read()
-
-    return payload
