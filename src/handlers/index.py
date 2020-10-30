@@ -14,4 +14,8 @@ def handle_index(_environ) -> ResponseT:
         "Content-type": "text/html",
     }
 
-    return status, headers, result
+    return ResponseT(
+        headers=headers,
+        payload=result,
+        status=status,
+    )

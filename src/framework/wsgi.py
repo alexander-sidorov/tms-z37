@@ -15,8 +15,8 @@ def application(environ, start_response):
 
     handler = handlers.get(url, system_handlers.handle_404)
 
-    status, headers, payload = handler(environ)
+    response = handler(environ)
 
-    start_response(status, list(headers.items()))
+    start_response(response.status, list(response.headers.items()))
 
-    yield payload
+    yield response.payload

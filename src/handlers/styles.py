@@ -7,4 +7,4 @@ def handle_styles(environ) -> ResponseT:
     status = "200 OK"
     headers = {"Content-type": "text/css"}
 
-    return status, headers, payload
+    return ResponseT(status, headers, payload)

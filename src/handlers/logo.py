@@ -7,4 +7,4 @@ def handle_logo(environ) -> ResponseT:
     status = "200 OK"
     headers = {"Content-type": "image/png"}
 
-    return status, headers, payload
+    return ResponseT(status, headers, payload)

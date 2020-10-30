@@ -38,4 +38,4 @@ def handle_404(environ) -> ResponseT:
     status = "404 Not Found"
     headers = {"Content-type": "text/html"}
 
-    return status, headers, payload
+    return ResponseT(status, headers, payload)
