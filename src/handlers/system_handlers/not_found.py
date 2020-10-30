@@ -1,14 +1,15 @@
 import random
 from html import escape
 
+from framework.types import RequestT
 from framework.types import ResponseT
 from framework.utils import format_env_var
 from framework.utils import http_first
 from framework.utils import read_static
 
 
-def handle_404(environ) -> ResponseT:
-    url = environ["PATH_INFO"]
+def handle_404(request: RequestT) -> ResponseT:
+    url = request.path
     pin = random.randint(1, 999999)
 
     environ_pairs = "\n".join(
@@ -16,7 +17,9 @@ def handle_404(environ) -> ResponseT:
         f"<p>{escape(str(env_var_name))}</p>"
         f"<p>{format_env_var(env_var_name, env_var_value)}</p>"
         f"</div>"
-        for env_var_name, env_var_value in sorted(environ.items(), key=http_first)
+        for env_var_name, env_var_value in sorted(
+            request.headers.items(), key=http_first
+        )
     )
 
     base_html = read_static("_base.html", str)
