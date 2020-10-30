@@ -1,3 +1,4 @@
+from framework.types import RequestT
 from handlers import handle_index
 from handlers import handle_logo
 from handlers import handle_styles
@@ -10,13 +11,24 @@ handlers = {
 }
 
 
-def application(environ, start_response):
-    url = environ["PATH_INFO"]
+def application(environ: dict, start_response):
+    path = environ["PATH_INFO"]
 
-    handler = handlers.get(url, system_handlers.handle_404)
+    handler = handlers.get(path, system_handlers.handle_404)
 
-    status, headers, payload = handler(environ)
+    request_headers = {
+        key[5:]: environ[key]
+        for key in filter(lambda i: i.startswith("HTTP_"), environ)
+    }
 
-    start_response(status, list(headers.items()))
+    request = RequestT(
+        method=environ["REQUEST_METHOD"],
+        path=path,
+        headers=request_headers,
+    )
 
-    yield payload
+    response = handler(request)
+
+    start_response(response.status, list(response.headers.items()))
+
+    yield response.payload
