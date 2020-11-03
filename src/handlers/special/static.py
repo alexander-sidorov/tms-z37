@@ -7,7 +7,6 @@ from framework.utils import read_static
 
 
 def handle_static(request: RequestT) -> ResponseT:
-    path = request.path
     file_name = request.kwargs["file_name"]
     content_type = mimetypes.guess_type(file_name)[0]
 

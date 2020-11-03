@@ -8,11 +8,11 @@ from handlers import make_error
 from handlers import special
 
 handlers = {
-    r"^/$": handle_index,
     r"^/logo.png/$": handle_logo,
     r"^/xxx/$": handle_styles,
     r"^/e/$": make_error,
     r"^/s/(?P<file_name>.+)$": special.handle_static,
+    r"^/$": handle_index,
 }
 
 
