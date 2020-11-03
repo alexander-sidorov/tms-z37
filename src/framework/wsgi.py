@@ -1,3 +1,5 @@
+import re
+
 from framework.types import RequestT
 from handlers import handle_index
 from handlers import handle_logo
@@ -6,11 +8,11 @@ from handlers import make_error
 from handlers import special
 
 handlers = {
-    "/": handle_index,
-    "/logo.png/": handle_logo,
-    "/xxx/": handle_styles,
-    "/e/": make_error,
-    "/s/": special.handle_static,
+    r"^/$": handle_index,
+    r"^/logo.png/$": handle_logo,
+    r"^/xxx/$": handle_styles,
+    r"^/e/$": make_error,
+    r"^/s/(?P<file_name>.+)$": special.handle_static,
 }
 
 
@@ -18,7 +20,12 @@ def application(environ: dict, start_response):
     try:
         path = environ["PATH_INFO"]
 
-        handler = handlers.get(path, special.handle_404)
+        handler = special.handle_404
+        kwargs = {}
+
+        for path_pattern, handler in handlers.items():
+            if m := re.match(path_pattern, path):
+                kwargs = m.groupdict()
 
         request_headers = {
             key[5:]: environ[key]
@@ -26,9 +33,10 @@ def application(environ: dict, start_response):
         }
 
         request = RequestT(
+            headers=request_headers,
+            kwargs=kwargs,
             method=environ["REQUEST_METHOD"],
             path=path,
-            headers=request_headers,
         )
 
         response = handler(request)

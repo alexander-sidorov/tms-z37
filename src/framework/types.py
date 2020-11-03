@@ -1,5 +1,6 @@
 import dataclasses
 from typing import NamedTuple
+from typing import Optional
 
 
 class ResponseT(NamedTuple):
@@ -13,3 +14,4 @@ class RequestT:
     method: str
     path: str
     headers: dict
+    kwargs: Optional[dict] = None

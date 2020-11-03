@@ -10,7 +10,7 @@ def handle_500(_request: RequestT = None) -> ResponseT:
     error_class, error, tb = sys.exc_info()
 
     filenames = "".join(
-        f"""<li><a href="http://localhost:8000/s{frame.f_code.co_filename}">{frame.f_code.co_filename}</a></li>"""
+        f"""<li><a href="http://localhost:8000/s/{frame.f_code.co_filename}">{frame.f_code.co_filename}</a></li>"""
         for frame, _lineno in traceback.walk_tb(tb)
     )
 
