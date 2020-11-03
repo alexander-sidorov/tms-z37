@@ -22,7 +22,7 @@ def handle_404(request: RequestT) -> ResponseT:
         )
     )
 
-    base_html = read_static("_base.html", str)
+    base_html = read_static("_base.html").content.decode()
 
     html_404 = f"""
     <h1>OOPS!</h1>
