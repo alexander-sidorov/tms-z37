@@ -1,11 +1,16 @@
+import http
+import mimetypes
 import re
 from html import escape
+from pathlib import Path
 from typing import Any
 from typing import Callable
-from typing import Dict
 from typing import Tuple
+from urllib.parse import parse_qs
 
 from framework.consts import DIR_STATIC
+from framework.errors import NotFound
+from framework.types import StaticT
 
 
 def http_first(value: Tuple[str, Any]) -> tuple:
@@ -32,16 +37,38 @@ def get_formatter(env_var_name: str) -> Callable[[str], str]:
     return lambda _v: _v
 
 
-def read_static(file_name: str, converter: Callable = bytes) -> Any:
-    path = DIR_STATIC / file_name
+def read_static(file_name: str) -> StaticT:
+    if file_name.startswith("/"):
+        file_obj = Path(file_name).resolve()
+    else:
+        file_obj = (DIR_STATIC / file_name).resolve()
 
-    modes: Dict[Any, str] = {
-        str: "r",
-    }
+    if not file_obj.exists():
+        raise NotFound
 
-    mode = modes.get(converter, "rb")
+    with file_obj.open("rb") as fp:
+        content = fp.read()
 
-    with path.open(mode) as fp:
-        payload = fp.read()
+    content_type = mimetypes.guess_type(file_name)[0]
 
-    return converter(payload)
+    return StaticT(content=content, content_type=content_type)
+
+
+def get_request_headers(environ: dict) -> dict:
+    environ_headers = filter(lambda _kv: _kv[0].startswith("HTTP_"), environ.items())
+    request_headers = {key[5:]: value for key, value in environ_headers}
+    return request_headers
+
+
+def get_query(environ: dict) -> dict:
+    qs = environ.get("QUERY_STRING")
+    query = parse_qs(qs or "")
+    return query
+
+
+def build_status(code: int) -> str:
+    status = http.HTTPStatus(code)
+    reason = "".join(word.capitalize() for word in status.name.split("_"))
+
+    text = f"{code} {reason}"
+    return text
