@@ -7,21 +7,27 @@ from framework.utils import read_static
 
 
 def handle_500(_request: RequestT = None) -> ResponseT:
+    traceback.print_exc()
+
     error_class, error, tb = sys.exc_info()
 
     filenames = "".join(
-        f"""<li><a href="http://localhost:8000/s/{frame.f_code.co_filename}">{frame.f_code.co_filename}</a></li>"""
-        for frame, _lineno in traceback.walk_tb(tb)
+        f"""<p>File <a href="http://localhost:8000/s/{frame.f_code.co_filename}">{frame.f_code.co_filename}</a>, line {lineno}</p>"""
+        for frame, lineno in traceback.walk_tb(tb)
     )
 
     document = f"""
         <h1>WASTED</h1>
-        <ul>
+        <hr>
+        <p>
         {filenames}
-        </ul>
+        </p>
+        <p>
+        {error_class.__name__}: {error}
+        </p>
     """
 
-    base_html = read_static("_base.html", str)
+    base_html = read_static("_base.html").content.decode()
 
     document = base_html.format(xxx=document)
 

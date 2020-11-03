@@ -1,48 +1,32 @@
-import re
-
+from framework.errors import NotFound
 from framework.types import RequestT
-from handlers import handle_index
-from handlers import handle_logo
-from handlers import handle_styles
-from handlers import make_error
+from framework.utils import get_query
+from framework.utils import get_request_headers
+from handlers import get_handler_and_kwargs
 from handlers import special
-
-handlers = {
-    r"^/logo.png/$": handle_logo,
-    r"^/xxx/$": handle_styles,
-    r"^/e/$": make_error,
-    r"^/s/(?P<file_name>.+)$": special.handle_static,
-    r"^/$": handle_index,
-}
 
 
 def application(environ: dict, start_response):
+    path = environ["PATH_INFO"]
+    method = environ["REQUEST_METHOD"]
+    handler, kwargs = get_handler_and_kwargs(path)
+    request_headers = get_request_headers(environ)
+    query = get_query(environ)
+
+    request = RequestT(
+        headers=request_headers,
+        kwargs=kwargs,
+        method=method,
+        path=path,
+        query=query,
+    )
+
     try:
-        path = environ["PATH_INFO"]
-
-        handler = special.handle_404
-        kwargs = {}
-
-        for path_pattern, handler in handlers.items():
-            if m := re.match(path_pattern, path):
-                kwargs = m.groupdict()
-                break
-
-        request_headers = {
-            key[5:]: environ[key]
-            for key in filter(lambda i: i.startswith("HTTP_"), environ)
-        }
-
-        request = RequestT(
-            headers=request_headers,
-            kwargs=kwargs,
-            method=environ["REQUEST_METHOD"],
-            path=path,
-        )
-
         response = handler(request)
+    except NotFound:
+        response = special.handle_404(request)
     except Exception:
-        response = special.handle_500()
+        response = special.handle_500(request)
 
     start_response(response.status, list(response.headers.items()))
 
