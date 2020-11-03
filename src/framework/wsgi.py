@@ -26,6 +26,7 @@ def application(environ: dict, start_response):
         for path_pattern, handler in handlers.items():
             if m := re.match(path_pattern, path):
                 kwargs = m.groupdict()
+                break
 
         request_headers = {
             key[5:]: environ[key]
