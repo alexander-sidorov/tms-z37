@@ -10,6 +10,7 @@ handlers = {
     "/logo.png/": handle_logo,
     "/xxx/": handle_styles,
     "/e/": make_error,
+    "/s/": special.handle_static,
 }
 
 
