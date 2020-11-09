@@ -15,8 +15,10 @@ class RequestT:
     method: str
     path: str
     headers: dict
-    query: Optional[dict] = None
     kwargs: Optional[dict] = None
+    query: Optional[dict] = None
+    form_data: Optional[dict] = None
+    body: Optional[bytes] = None
 
 
 HandlerT = Callable[[RequestT], ResponseT]

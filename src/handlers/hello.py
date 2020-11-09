@@ -5,7 +5,8 @@ from framework.utils import read_static
 
 
 def handle_hello(request: RequestT) -> ResponseT:
-    name = (request.query.get("name") or [None])[0]
+    name = (request.form_data.get("name") or [None])[0]
+    address = (request.form_data.get("address") or [None])[0]
 
     base = read_static("_base.html")
 
@@ -13,6 +14,8 @@ def handle_hello(request: RequestT) -> ResponseT:
     hello_html = read_static("hello.html").content.decode()
 
     document = hello_html.format(
+        address_header=address or "nowhere",
+        address_value=address or "",
         name_header=name or "anon",
         name_value=name or "",
     )
