@@ -61,7 +61,7 @@ def get_request_headers(environ: dict) -> dict:
     return request_headers
 
 
-def get_query(environ: dict) -> dict:
+def get_request_query(environ: dict) -> dict:
     qs = environ.get("QUERY_STRING")
     query = parse_qs(qs or "")
     return query
@@ -75,13 +75,13 @@ def build_status(code: int) -> str:
     return text
 
 
-def get_form_data(body: bytes) -> Dict[str, Any]:
+def build_form_data(body: bytes) -> Dict[str, Any]:
     qs = body.decode()
     form_data = parse_qs(qs or "")
     return form_data
 
 
-def get_body(environ: dict) -> bytes:
+def get_request_body(environ: dict) -> bytes:
     fp = environ["wsgi.input"]
     cl = int(environ.get("CONTENT_LENGTH") or 0)
 
