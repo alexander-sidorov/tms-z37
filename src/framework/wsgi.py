@@ -3,14 +3,16 @@ from framework.types import RequestT
 from framework.utils import build_form_data
 from framework.utils import get_request_body
 from framework.utils import get_request_headers
+from framework.utils import get_request_method
+from framework.utils import get_request_path
 from framework.utils import get_request_query
 from handlers import get_handler_and_kwargs
 from handlers import special
 
 
 def application(environ: dict, start_response):
-    path = environ["PATH_INFO"]
-    method = environ["REQUEST_METHOD"]
+    path = get_request_path(environ)
+    method = get_request_method(environ)
     handler, kwargs = get_handler_and_kwargs(path)
     request_headers = get_request_headers(environ)
     query = get_request_query(environ)

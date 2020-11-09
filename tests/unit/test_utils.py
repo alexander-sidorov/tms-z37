@@ -66,7 +66,7 @@ def test_get_request_headers():
 
     headers = utils.get_request_headers(environ)
 
-    assert headers == {"HTTP_ACCEPT": environ["HTTP_ACCEPT"]}
+    assert headers == {"ACCEPT": environ["HTTP_ACCEPT"]}
 
 
 def test_get_request_query():
@@ -98,15 +98,30 @@ def test_build_form_data():
 
 
 def test_get_request_body():
-    src = io.BytesIO()
-    content = b"xxx"
-    src.write(content)
-    src.seek(0)
-
     environ = {}
     body = utils.get_request_body(environ)
     assert body == b""
 
-    environ = {"wsgi.input": src}
+    environ = {"wsgi.input": 1}
+    body = utils.get_request_body(environ)
+    assert body == b""
+
+    environ = {"wsgi.input": 1, "REQUEST_METHOD": "POST"}
+    body = utils.get_request_body(environ)
+    assert body == b""
+
+    environ = {"wsgi.input": 1, "CONTENT_LENGTH": "123"}
+    body = utils.get_request_body(environ)
+    assert body == b""
+
+    src = io.BytesIO()
+    content = b"xxx"
+    src.write(content)
+    src.seek(0)
+    environ = {
+        "wsgi.input": src,
+        "REQUEST_METHOD": "POST",
+        "CONTENT_LENGTH": str(len(content)),
+    }
     body = utils.get_request_body(environ)
     assert body == content
