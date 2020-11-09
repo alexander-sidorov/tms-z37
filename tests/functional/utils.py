@@ -3,6 +3,11 @@ from functools import wraps
 from pathlib import Path
 
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+
+from tests.functional.pages.abstract import PageObject
 
 ARTIFACTS_DIR = (Path(__file__).parent / "artifacts").resolve()
 
@@ -35,3 +40,13 @@ def screenshot_on_failure(test):
             raise
 
     return decorated_test
+
+
+def validate_redirect(page: PageObject, url: str):
+    try:
+        redirected = WebDriverWait(page.browser, 4).until(
+            expected_conditions.url_matches(url)
+        )
+        assert redirected
+    except TimeoutException as err:
+        raise AssertionError("no redirect") from err

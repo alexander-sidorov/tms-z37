@@ -10,6 +10,7 @@ from typing import Tuple
 from urllib.parse import parse_qs
 
 from framework.consts import DIR_STATIC
+from framework.consts import METHODS_WITH_REQUEST_BODY
 from framework.errors import NotFound
 from framework.types import StaticT
 
@@ -61,7 +62,7 @@ def get_request_headers(environ: dict) -> dict:
     return request_headers
 
 
-def get_query(environ: dict) -> dict:
+def get_request_query(environ: dict) -> dict:
     qs = environ.get("QUERY_STRING")
     query = parse_qs(qs or "")
     return query
@@ -69,25 +70,47 @@ def get_query(environ: dict) -> dict:
 
 def build_status(code: int) -> str:
     status = http.HTTPStatus(code)
-    reason = "".join(word.capitalize() for word in status.name.split("_"))
+
+    def _process_word(_word: str) -> str:
+        if _word == "OK":
+            return _word
+        return _word.capitalize()
+
+    reason = " ".join(_process_word(word) for word in status.name.split("_"))
 
     text = f"{code} {reason}"
     return text
 
 
-def get_form_data(body: bytes) -> Dict[str, Any]:
+def build_form_data(body: bytes) -> Dict[str, Any]:
     qs = body.decode()
     form_data = parse_qs(qs or "")
     return form_data
 
 
-def get_body(environ: dict) -> bytes:
-    fp = environ["wsgi.input"]
-    cl = int(environ.get("CONTENT_LENGTH") or 0)
+def get_request_body(environ: dict) -> bytes:
+    method = get_request_method(environ)
+    if method not in METHODS_WITH_REQUEST_BODY:
+        return b""
 
+    fp = environ.get("wsgi.input")
+    if not fp:
+        return b""
+
+    cl = int(environ.get("CONTENT_LENGTH") or 0)
     if not cl:
         return b""
 
     content = fp.read(cl)
 
     return content
+
+
+def get_request_method(environ: dict) -> str:
+    method = environ.get("REQUEST_METHOD", "GET")
+    return method
+
+
+def get_request_path(environ: dict) -> str:
+    path = environ.get("PATH_INFO", "/")
+    return path
