@@ -1,6 +1,4 @@
-import dataclasses
 import http
-import json
 import mimetypes
 import re
 from html import escape
@@ -8,15 +6,15 @@ from pathlib import Path
 from typing import Any
 from typing import Callable
 from typing import Dict
+from typing import Optional
 from typing import Tuple
 from urllib.parse import parse_qs
 
 from framework.consts import DIR_STATIC
 from framework.consts import METHODS_WITH_REQUEST_BODY
-from framework.consts import USER_DATA_FILE
+from framework.consts import USER_COOKIE
 from framework.errors import NotFound
 from framework.types import StaticT
-from framework.types import UserDataT
 
 
 def http_first(value: Tuple[str, Any]) -> tuple:
@@ -87,25 +85,28 @@ def build_status(code: int) -> str:
 
 
 def build_form_data(body: bytes) -> Dict[str, Any]:
+    if not body:
+        return {}
+
     qs = body.decode()
     form_data = parse_qs(qs or "")
     return form_data
 
 
-def get_request_body(environ: dict) -> bytes:
+def get_request_body(environ: dict) -> Optional[bytes]:
     method = get_request_method(environ)
     if method not in METHODS_WITH_REQUEST_BODY:
-        return b""
+        return None
 
     fp = environ.get("wsgi.input")
     if not fp:
-        return b""
+        return None
 
-    cl = int(environ.get("CONTENT_LENGTH") or 0)
-    if not cl:
-        return b""
+    content_length = int(environ.get("CONTENT_LENGTH") or 0)
+    if not content_length:
+        return None
 
-    content = fp.read(cl)
+    content = fp.read(content_length)
 
     return content
 
@@ -120,19 +121,8 @@ def get_request_path(environ: dict) -> str:
     return path
 
 
-def save_user_data(user_data: UserDataT) -> None:
-    user_data_dct = dataclasses.asdict(user_data)
+def get_user_id(headers: Dict) -> Optional[str]:
+    cookies = parse_qs(headers.get("COOKIE", ""))
+    user_id = cookies.get(USER_COOKIE, [None])[0]
 
-    with USER_DATA_FILE.open("w") as fp:
-        json.dump(user_data_dct, fp, sort_keys=True, indent=2)
-
-
-def load_user_data() -> UserDataT:
-    if not USER_DATA_FILE.is_file():
-        return UserDataT()
-
-    with USER_DATA_FILE.open("r") as fp:
-        user_data_dct = json.load(fp)
-
-    user_data = UserDataT(**user_data_dct)
-    return user_data
+    return user_id
