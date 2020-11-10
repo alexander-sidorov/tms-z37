@@ -11,7 +11,7 @@ from framework.utils import save_user_data
 def handle_hello(request: RequestT) -> ResponseT:
     handlers = {
         "GET": handle_hello_get,
-        "POST": handle_hello_get,
+        "POST": handle_hello_post,
     }
 
     handler = handlers.get(request.method)
