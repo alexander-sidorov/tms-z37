@@ -1,5 +1,46 @@
-h1 {
-  color: darkred;
+body {
+  background-color: #040a16;
+  color: orange;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: yellow;
+}
+
+a {
+  color: darkorange;
+}
+
+a:hover {
+  color: orangered;
+}
+
+a:visited {
+  color: chocolate;
+}
+
+nav {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr) 50%;
+  grid-template-rows: 100%;
+  margin: 0;
+}
+
+nav p {
+  border-right: 1px orange solid;
+  text-align: center;
+}
+
+nav p:last-of-type {
+  border-right: 0;
+}
+
+header {
+  background-color: #173470;
+  margin: 0;
+  padding: 1rem;
 }
 
 .url {
@@ -48,3 +89,4 @@ h1 {
 .environ-table .http {
   background-color: rgba(0, 21, 205, 0.1);
 }
+
