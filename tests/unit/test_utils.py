@@ -58,6 +58,7 @@ def test_read_static(mocker, tmp_path):
     assert static.content == json.dumps(data).encode()
 
 
+@pytest.mark.unit
 def test_get_request_headers():
     environ = {
         "CONTENT_LENGTH": "1",
@@ -69,6 +70,7 @@ def test_get_request_headers():
     assert headers == {"ACCEPT": environ["HTTP_ACCEPT"]}
 
 
+@pytest.mark.unit
 def test_get_request_query():
     query = utils.get_request_query({})
     assert query == {}
@@ -77,6 +79,7 @@ def test_get_request_query():
     assert query == {"x": ["1", "2"], "y": ["3"]}
 
 
+@pytest.mark.unit
 def test_build_status():
     status = utils.build_status(200)
     assert status == "200 OK"
@@ -91,28 +94,30 @@ def test_build_status():
     assert status == "500 Internal Server Error"
 
 
+@pytest.mark.unit
 def test_build_form_data():
     body = b"x=1&x=2&y=3"
     form_data = utils.build_form_data(body)
     assert form_data == {"x": ["1", "2"], "y": ["3"]}
 
 
+@pytest.mark.unit
 def test_get_request_body():
     environ = {}
     body = utils.get_request_body(environ)
-    assert body == b""
+    assert body is None
 
     environ = {"wsgi.input": 1}
     body = utils.get_request_body(environ)
-    assert body == b""
+    assert body is None
 
     environ = {"wsgi.input": 1, "REQUEST_METHOD": "POST"}
     body = utils.get_request_body(environ)
-    assert body == b""
+    assert body is None
 
     environ = {"wsgi.input": 1, "CONTENT_LENGTH": "123"}
     body = utils.get_request_body(environ)
-    assert body == b""
+    assert body is None
 
     src = io.BytesIO()
     content = b"xxx"
