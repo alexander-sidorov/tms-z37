@@ -20,6 +20,10 @@ DIR_REPO = DIR_SRC.parent.resolve()
 
 DIR_STATIC = (DIR_REPO / "static").resolve()
 
+DIR_STORAGE = (DIR_REPO / "db").resolve()
+
 METHODS_WITH_REQUEST_BODY = {
     "POST",
 }
+
+USER_DATA_FILE = (DIR_STORAGE / "user_data.json").resolve()

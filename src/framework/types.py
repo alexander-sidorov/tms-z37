@@ -7,7 +7,7 @@ from typing import Optional
 class ResponseT(NamedTuple):
     status: str
     headers: dict
-    payload: bytes
+    payload: Optional[bytes] = None
 
 
 @dataclasses.dataclass
@@ -27,3 +27,9 @@ HandlerT = Callable[[RequestT], ResponseT]
 class StaticT(NamedTuple):
     content: bytes
     content_type: str
+
+
+@dataclasses.dataclass
+class UserDataT:
+    name: Optional[str] = None
+    address: Optional[str] = None

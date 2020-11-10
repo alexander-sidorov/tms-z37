@@ -1,4 +1,6 @@
+import dataclasses
 import http
+import json
 import mimetypes
 import re
 from html import escape
@@ -11,8 +13,10 @@ from urllib.parse import parse_qs
 
 from framework.consts import DIR_STATIC
 from framework.consts import METHODS_WITH_REQUEST_BODY
+from framework.consts import USER_DATA_FILE
 from framework.errors import NotFound
 from framework.types import StaticT
+from framework.types import UserDataT
 
 
 def http_first(value: Tuple[str, Any]) -> tuple:
@@ -114,3 +118,21 @@ def get_request_method(environ: dict) -> str:
 def get_request_path(environ: dict) -> str:
     path = environ.get("PATH_INFO", "/")
     return path
+
+
+def save_user_data(user_data: UserDataT) -> None:
+    user_data_dct = dataclasses.asdict(user_data)
+
+    with USER_DATA_FILE.open("w") as fp:
+        json.dump(user_data_dct, fp, sort_keys=True, indent=2)
+
+
+def load_user_data() -> UserDataT:
+    if not USER_DATA_FILE.is_file():
+        return UserDataT()
+
+    with USER_DATA_FILE.open("r") as fp:
+        user_data_dct = json.load(fp)
+
+    user_data = UserDataT(**user_data_dct)
+    return user_data
