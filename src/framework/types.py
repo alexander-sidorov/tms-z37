@@ -6,7 +6,7 @@ from typing import Optional
 
 class ResponseT(NamedTuple):
     status: str
-    headers: dict
+    headers: Optional[dict] = None
     payload: Optional[bytes] = None
 
 

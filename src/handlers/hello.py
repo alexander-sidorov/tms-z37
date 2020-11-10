@@ -1,3 +1,4 @@
+from framework.errors import MethodNotAllowed
 from framework.types import RequestT
 from framework.types import ResponseT
 from framework.types import UserDataT
@@ -8,10 +9,17 @@ from framework.utils import save_user_data
 
 
 def handle_hello(request: RequestT) -> ResponseT:
-    if request.method == "GET":
-        return handle_hello_get(request)
-    else:
-        return handle_hello_post(request)
+    handlers = {
+        "GET": handle_hello_get,
+        "POST": handle_hello_get,
+    }
+
+    handler = handlers.get(request.method)
+    if not handler:
+        raise MethodNotAllowed
+
+    response = handler(request)
+    return response
 
 
 def handle_hello_get(request: RequestT) -> ResponseT:
