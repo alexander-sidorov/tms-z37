@@ -36,7 +36,7 @@ def handle_hello_get(request: RequestT) -> ResponseT:
         name_header=request.user.name or "anon",
         name_value=request.user.name or "",
     )
-    document = base_html.format(xxx=document)
+    document = base_html.format(body=document)
 
     resp = ResponseT(
         status=build_status(200),
