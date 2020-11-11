@@ -36,7 +36,7 @@ def handle_404(request: RequestT) -> ResponseT:
         <div>
     """
 
-    document = base_html.format(xxx=html_404)
+    document = base_html.format(body=html_404)
 
     payload = document.encode()
     status = build_status(404)
