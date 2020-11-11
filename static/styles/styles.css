@@ -95,7 +95,8 @@ main {
 }
 
 .pin {
-  background-color: orange;
+  background-color: saddlebrown;
+  color: yellow;
   font-family: "Fira Code", Courier, monospace;
   font-size: 120%;
   padding: 4px;
@@ -114,6 +115,7 @@ main {
   background-color: rgba(0, 169, 0, 0.1);
   display: grid;
   font-family: "Fira Code", Courier, monospace;
+  font-size: calc(var(--font-size) * 0.5);
   grid-column-gap: 16px;
   grid-template-columns: 24% auto;
   grid-template-rows: 100%;
