@@ -15,6 +15,7 @@ from framework import settings
 from framework.consts import DIR_STATIC
 from framework.consts import METHODS_WITH_REQUEST_BODY
 from framework.consts import USER_COOKIE
+from framework.consts import USER_TTL
 from framework.errors import NotFound
 from framework.types import StaticT
 
@@ -133,6 +134,23 @@ def get_user_id(headers: Dict) -> Optional[str]:
 
     user_id = cookies[USER_COOKIE].value
     return user_id
+
+
+def build_user_cookie_header(user_id: str, clear=False) -> str:
+    jar = SimpleCookie()
+
+    jar[USER_COOKIE] = user_id
+
+    cookie = jar[USER_COOKIE]
+    cookie["Domain"] = settings.HOST
+    cookie["Path"] = "/"
+    cookie["HttpOnly"] = True
+
+    max_age = 0 if clear else USER_TTL.total_seconds()
+    cookie["Max-Age"] = max_age
+
+    header = str(jar).split(":")[1].strip()
+    return header
 
 
 def host_is_local(host: str) -> bool:

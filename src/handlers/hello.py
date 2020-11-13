@@ -1,14 +1,10 @@
-from http.cookies import SimpleCookie
-
-from framework import settings
-from framework.consts import USER_COOKIE
-from framework.consts import USER_TTL
 from framework.db import delete_user
 from framework.db import save_user
 from framework.errors import MethodNotAllowed
 from framework.types import RequestT
 from framework.types import ResponseT
 from framework.utils import build_status
+from framework.utils import build_user_cookie_header
 from framework.utils import read_static
 
 
@@ -65,20 +61,11 @@ def handle_hello_post(request: RequestT) -> ResponseT:
 
     status = build_status(302)
 
-    cookies = SimpleCookie()
-
-    cookies[USER_COOKIE] = request.user.id
-    cookie = cookies[USER_COOKIE]
-    cookie["Domain"] = settings.HOST
-    cookie["Path"] = "/"
-    cookie["HttpOnly"] = True
-    cookie["Max-Age"] = USER_TTL.total_seconds()
-
-    cookies_header = str(cookies).split(":")[1].strip()
+    cookie = build_user_cookie_header(request.user.id)
 
     headers = {
         "Location": "/h/",
-        "Set-Cookie": cookies_header,
+        "Set-Cookie": cookie,
     }
 
     response = ResponseT(
@@ -93,15 +80,12 @@ def handle_hello_delete(request: RequestT) -> ResponseT:
     delete_user(request.user)
 
     status = build_status(302)
+
+    cookie = build_user_cookie_header(request.user.id, clear=True)
+
     headers = {
         "Location": "/h/",
-        "Set-Cookie": (
-            f"{USER_COOKIE}={request.user.id};"
-            f"Domain={settings.HOST};"
-            f"Path=/;"
-            f"HttpOnly;"
-            f"Max-Age=0"
-        ),
+        "Set-Cookie": cookie,
     }
 
     response = ResponseT(
