@@ -125,14 +125,14 @@ def get_request_path(environ: dict) -> str:
 
 
 def get_user_id(headers: Dict) -> Optional[str]:
-    cookies_header = headers.get("COOKIE", "")
+    header = headers.get("COOKIE", "")
 
-    cookies = SimpleCookie(cookies_header)
+    jar = SimpleCookie(header)
 
-    if USER_COOKIE not in cookies:
+    if USER_COOKIE not in jar:
         return None
 
-    user_id = cookies[USER_COOKIE].value
+    user_id = jar[USER_COOKIE].value
     return user_id
 
 
@@ -149,7 +149,7 @@ def build_user_cookie_header(user_id: str, clear=False) -> str:
     max_age = 0 if clear else USER_TTL.total_seconds()
     cookie["Max-Age"] = max_age
 
-    header = str(jar).split(":")[1].strip()
+    header = jar.output(header="").strip()
     return header
 
 
