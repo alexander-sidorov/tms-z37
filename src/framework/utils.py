@@ -2,6 +2,7 @@ import http
 import mimetypes
 import re
 from html import escape
+from http.cookies import SimpleCookie
 from pathlib import Path
 from typing import Any
 from typing import Callable
@@ -123,9 +124,14 @@ def get_request_path(environ: dict) -> str:
 
 
 def get_user_id(headers: Dict) -> Optional[str]:
-    cookies = parse_qs(headers.get("COOKIE", ""))
-    user_id = cookies.get(USER_COOKIE, [None])[0]
+    cookies_header = headers.get("COOKIE", "")
 
+    cookies = SimpleCookie(cookies_header)
+
+    if USER_COOKIE not in cookies:
+        return None
+
+    user_id = cookies[USER_COOKIE].value
     return user_id
 
 

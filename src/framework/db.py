@@ -42,6 +42,13 @@ def save_user(user: UserT):
     _store_all_users(all_users)
 
 
+def delete_user(user: UserT) -> None:
+    user.fix()
+    all_users = _load_all_users()
+    all_users.pop(user.id, None)
+    _store_all_users(all_users)
+
+
 def _load_all_users() -> Dict:
     data = {}
 
