@@ -103,11 +103,11 @@ def test_build_form_data():
 
 @pytest.mark.unit
 def test_get_request_body():
-    environ = {}
+    environ = {"REQUEST_METHOD": "GET"}
     body = utils.get_request_body(environ)
     assert body is None
 
-    environ = {"wsgi.input": 1}
+    environ = {"REQUEST_METHOD": "GET", "wsgi.input": 1}
     body = utils.get_request_body(environ)
     assert body is None
 
@@ -115,7 +115,7 @@ def test_get_request_body():
     body = utils.get_request_body(environ)
     assert body is None
 
-    environ = {"wsgi.input": 1, "CONTENT_LENGTH": "123"}
+    environ = {"wsgi.input": 1, "CONTENT_LENGTH": "123", "REQUEST_METHOD": "GET"}
     body = utils.get_request_body(environ)
     assert body is None
 

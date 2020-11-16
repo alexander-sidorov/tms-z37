@@ -1,13 +1,13 @@
 from framework import errors
-from framework.db import find_user
 from framework.types import RequestT
+from framework.utils import authenticate
+from framework.utils import build_cookies
 from framework.utils import build_form_data
 from framework.utils import get_request_body
 from framework.utils import get_request_headers
 from framework.utils import get_request_method
 from framework.utils import get_request_path
 from framework.utils import get_request_query
-from framework.utils import get_user_id
 from handlers import get_handler_and_kwargs
 from handlers import special
 
@@ -20,19 +20,20 @@ def application(environ: dict, start_response):
     query = get_request_query(environ)
     body = get_request_body(environ)
     form_data = build_form_data(body)
-    user_id = get_user_id(request_headers)
-    user = find_user(user_id)
+    cookies = build_cookies(request_headers)
 
     request = RequestT(
         body=body,
+        cookies=cookies,
         form_data=form_data,
         headers=request_headers,
         kwargs=kwargs,
         method=method,
         path=path,
         query=query,
-        user=user,
     )
+
+    authenticate(request)
 
     try:
         response = handler(request)
