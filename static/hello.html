@@ -1,7 +1,7 @@
 <h2 id="greeting_display_id">Hello {name_header}</h2>
-<p id="address_display_id">You are at {address_header}</p>
+<p id="address_display_id">You are in {address_header}</p>
 
-<form method="post">
+<form action="/h/greet/" method="post">
   <p>
     <label for="name_id">Name:</label>
     <input id="name_id" name="name" placeholder="What is your name?" type="text" value="{name_value}">
@@ -12,6 +12,9 @@
   </p>
   <p>
     <button id="submit_id" type="submit">Send</button>
-    <button id="reset_id" type="reset">Reset</button>
   </p>
+</form>
+
+<form action="/h/reset/" method="post">
+  <button id="reset_id" type="submit">Reset</button>
 </form>

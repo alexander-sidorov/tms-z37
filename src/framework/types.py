@@ -1,6 +1,7 @@
 import dataclasses
 import os
 from datetime import datetime
+from http.cookies import SimpleCookie
 from typing import Callable
 from typing import NamedTuple
 from typing import Optional
@@ -20,6 +21,7 @@ class RequestT:
     method: str
     path: str
     headers: dict
+    cookies: Optional[SimpleCookie] = None
     kwargs: Optional[dict] = None
     body: Optional[bytes] = None
     query: Optional[dict] = None

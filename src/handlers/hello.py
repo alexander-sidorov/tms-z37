@@ -1,59 +1,65 @@
-from framework import settings
-from framework.consts import USER_COOKIE
-from framework.consts import USER_TTL
+from framework.db import delete_user
 from framework.db import save_user
 from framework.errors import MethodNotAllowed
+from framework.errors import NotFound
 from framework.types import RequestT
 from framework.types import ResponseT
+from framework.utils import build_reset_session_header
+from framework.utils import build_session_header
 from framework.utils import build_status
 from framework.utils import read_static
 
 
 def handle_hello(request: RequestT) -> ResponseT:
     handlers = {
-        "GET": handle_hello_get,
-        "POST": handle_hello_post,
+        "greet": _handle_hello_greet,
+        "reset": _handle_hello_reset,
     }
 
-    handler = handlers.get(request.method)
+    handler = handlers.get(request.kwargs.get("action"), _handle_hello_index)
     if not handler:
-        raise MethodNotAllowed
+        raise NotFound
 
     response = handler(request)
     return response
 
 
-def handle_hello_get(request: RequestT) -> ResponseT:
-    assert request.method == "GET"
+def _handle_hello_index(request: RequestT) -> ResponseT:
+    if request.method != "GET":
+        raise MethodNotAllowed
 
     base = read_static("_base.html")
     base_html = base.content.decode()
     hello_html = read_static("hello.html").content.decode()
 
-    document = hello_html.format(
-        address_header=request.user.address or "nowhere",
+    body = hello_html.format(
+        address_header=request.user.address or "the middle of fucking nowhere",
         address_value=request.user.address or "",
-        name_header=request.user.name or "anon",
+        name_header=request.user.name or "anonymous",
         name_value=request.user.name or "",
     )
-    document = base_html.format(body=document)
 
-    resp = ResponseT(
-        status=build_status(200),
-        headers={"Content-Type": base.content_type},
+    document = base_html.format(body=body)
+
+    status = build_status(200)
+
+    headers = {"Content-Type": base.content_type}
+
+    response = ResponseT(
+        headers=headers,
         payload=document.encode(),
+        status=status,
     )
 
-    return resp
+    return response
 
 
-def handle_hello_post(request: RequestT) -> ResponseT:
-    assert request.method == "POST"
+def _handle_hello_greet(request: RequestT) -> ResponseT:
+    if request.method != "POST":
+        raise MethodNotAllowed
 
-    form_data = request.form_data
-
-    name = form_data.get("name", [None])[0]
-    address = form_data.get("address", [None])[0]
+    name = request.form_data.get("name", [None])[0]
+    address = request.form_data.get("address", [None])[0]
 
     request.user.name = name
     request.user.address = address
@@ -61,14 +67,35 @@ def handle_hello_post(request: RequestT) -> ResponseT:
     save_user(request.user)
 
     status = build_status(302)
+
+    cookie = build_session_header(request.user.id)
+
     headers = {
         "Location": "/h/",
-        "Set-Cookie": (
-            f"{USER_COOKIE}={request.user.id};"
-            f" Domain={settings.HOST};"
-            f" HttpOnly;"
-            f" Max-Age={USER_TTL.total_seconds()}"
-        ),
+        "Set-Cookie": cookie,
+    }
+
+    response = ResponseT(
+        headers=headers,
+        status=status,
+    )
+
+    return response
+
+
+def _handle_hello_reset(request: RequestT) -> ResponseT:
+    if request.method != "POST":
+        raise MethodNotAllowed
+
+    delete_user(request.user)
+
+    status = build_status(302)
+
+    cookie = build_reset_session_header(request.user.id)
+
+    headers = {
+        "Location": "/h/",
+        "Set-Cookie": cookie,
     }
 
     response = ResponseT(
