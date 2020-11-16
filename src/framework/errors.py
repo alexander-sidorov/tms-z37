@@ -4,3 +4,7 @@ class HttpError(RuntimeError):
 
 class NotFound(HttpError):
     pass
+
+
+class MethodNotAllowed(HttpError):
+    pass
