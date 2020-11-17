@@ -15,6 +15,7 @@ pytest-selenium = "*"
 
 [packages]
 delorean = "*"
+django = "*"
 dynaconf = { extras = ["yaml"], version = "*" }
 gunicorn = "*"
 psycopg2-binary = "*"
