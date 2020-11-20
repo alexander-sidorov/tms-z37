@@ -1,12 +1,18 @@
 from pathlib import Path
 
+from dynaconf import settings as _ds
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "=*ibr1@$g--i5e11g+ak&)y$#wtin0&_-2^&)ktdrmkl^kcc4="
+SECRET_KEY = _ds.SECRET_KEY
 
-DEBUG = True
+DEBUG = _ds.MODE_DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    _ds.HOST,
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
