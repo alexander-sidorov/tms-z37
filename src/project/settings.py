@@ -4,6 +4,8 @@ from dynaconf import settings as _ds
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DIR_PROJECT = BASE_DIR / "project"
+
 SECRET_KEY = _ds.SECRET_KEY
 
 DEBUG = _ds.MODE_DEBUG
@@ -38,7 +40,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [DIR_PROJECT / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
