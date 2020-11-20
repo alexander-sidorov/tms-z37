@@ -17,7 +17,7 @@ test:
 
 
 .PHONY: run
-run:
+run: static
 	$(call log, starting local web server)
 	$(PYTHON) src/manage.py runserver
 
