@@ -8,10 +8,11 @@ default:
   DIRS_RESOURCES:
     - config
     - scripts
-    - static
+    - src/project/static/
   DIRS_SOURCES:
     - src
-  DIRS_TEMPLATES: [ ]
+  DIRS_TEMPLATES:
+    - src/project/templates/
   HOST: ""
   MODE_DEBUG: true
   MODE_PROFILING: false

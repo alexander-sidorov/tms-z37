@@ -1,15 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Z37</title>
-  <link href="/s/styles/styles.css" rel="stylesheet"/>
-  <link href="/s/images/logo.png" rel="shortcut icon" type="image/png"/>
+  <link href="{% static 'styles/styles.css' %}" rel="stylesheet"/>
+  <link href="{% static 'images/logo.png' %}" rel="shortcut icon" type="image/png"/>
 </head>
 <body>
 <header>
   <div class="flat">
-    <a href="/"><img alt="Logo" height="100rem" src="/s/images/logo.png"></a>
+    <a href="/"><img alt="Logo" height="100rem" src="{% static 'images/logo.png' %}"></a>
     <a href="/"><h1>Z37 study project</h1></a>
   </div>
   <nav>
