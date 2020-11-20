@@ -5,6 +5,7 @@
 .idea/
 .pytest_cache/
 .secrets.*
+.static/
 .tests_artifacts/
 .venv
 __pycache__/

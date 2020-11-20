@@ -1,12 +1,24 @@
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+from dynaconf import settings as _ds
 
-SECRET_KEY = "=*ibr1@$g--i5e11g+ak&)y$#wtin0&_-2^&)ktdrmkl^kcc4="
+_this_file = Path(__file__).resolve()
 
-DEBUG = True
+DIR_PROJECT = _this_file.parent.resolve()
 
-ALLOWED_HOSTS = []
+DIR_SRC = DIR_PROJECT.parent.resolve()
+
+DIR_REPO = DIR_SRC.parent.resolve()
+
+SECRET_KEY = _ds.SECRET_KEY
+
+DEBUG = _ds.MODE_DEBUG
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    _ds.HOST,
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -19,6 +31,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -32,7 +45,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [DIR_PROJECT / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -50,7 +63,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": DIR_SRC / "db.sqlite3",
     }
 }
 
@@ -79,4 +92,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = "/static/"
+STATIC_URL = "/s/"
+
+STATIC_ROOT = DIR_REPO / ".static"
+
+STATICFILES_DIRS = [
+    DIR_PROJECT / "static",
+]
+
+if not DEBUG:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
