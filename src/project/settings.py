@@ -1,6 +1,9 @@
 from pathlib import Path
 
+import sentry_sdk
 from dynaconf import settings as _ds
+
+sentry_sdk.init(_ds.SENTRY_DSN, traces_sample_rate=1.0)
 
 _this_file = Path(__file__).resolve()
 

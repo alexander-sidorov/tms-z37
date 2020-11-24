@@ -19,6 +19,7 @@ django = "*"
 dynaconf = { extras = ["yaml"], version = "*" }
 gunicorn = "*"
 psycopg2-binary = "*"
+sentry-sdk = "*"
 whitenoise = "*"
 
 [requires]
