@@ -58,7 +58,7 @@ db: resetdb
 
 
 .PHONY: data
-data: static
+data: static migrate
 	$(call log, preparing data)
 
 
@@ -69,7 +69,7 @@ static:
 
 
 .PHONY: resetdb
-resetdb:  dropdb createdb migrations migrate
+resetdb: dropdb createdb migrations migrate
 	$(call log, resetting db to initial state)
 
 

@@ -22,6 +22,7 @@ default:
   PORT: -1
   PROJECT_NAME: ""
   SECRET_KEY: ""
+  SENTRY_DSN: ""
   TEMPLATE_ENGINE: "Django"
   VENV_SYNTHETIC: false
   WEB_CONCURRENCY: 0
@@ -44,3 +45,4 @@ ci:
 heroku:
   HOST: "tms-z37.herokuapp.com"
   MODE_DEBUG: false
+  VENV_SYNTHETIC: true

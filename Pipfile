@@ -19,7 +19,8 @@ django = "*"
 dynaconf = { extras = ["yaml"], version = "*" }
 gunicorn = "*"
 psycopg2-binary = "*"
+sentry-sdk = "*"
 whitenoise = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
