@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class HelloConfig(AppConfig):
-    label = 'hello'
+    label = "hello"
     name = f"applications.{label}"
