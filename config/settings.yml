@@ -4,6 +4,7 @@ default:
   DIRS_EXCLUDED:
     - .idea
     - .pytest_cache
+    - .static
     - .tests_artifacts
   DIRS_RESOURCES:
     - config
@@ -12,6 +13,8 @@ default:
   DIRS_SOURCES:
     - src
   DIRS_TEMPLATES:
+    - src/applications/hello/templates/
+    - src/applications/landing/templates/
     - src/project/templates/
   HOST: ""
   MODE_DEBUG: true
