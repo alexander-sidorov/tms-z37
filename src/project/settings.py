@@ -1,12 +1,14 @@
+import os
 from pathlib import Path
 
+import dj_database_url
 import sentry_sdk
-from dynaconf import settings as _ds
+from dynaconf import settings as dyn
 
-DEBUG = _ds.MODE_DEBUG
+DEBUG = dyn.MODE_DEBUG
 
 if not DEBUG:
-    sentry_sdk.init(_ds.SENTRY_DSN, traces_sample_rate=1.0)
+    sentry_sdk.init(dyn.SENTRY_DSN, traces_sample_rate=1.0)
 
 _this_file = Path(__file__).resolve()
 
@@ -16,12 +18,12 @@ DIR_SRC = DIR_PROJECT.parent.resolve()
 
 DIR_REPO = DIR_SRC.parent.resolve()
 
-SECRET_KEY = _ds.SECRET_KEY
+SECRET_KEY = dyn.SECRET_KEY
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    _ds.HOST,
+    dyn.HOST,
 ]
 
 INSTALLED_APPS = [
@@ -67,12 +69,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "project.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DIR_SRC / "db.sqlite3",
-    }
-}
+DATABASE_URL = os.getenv("DATABASE_URL", dyn.DATABASE_URL)
+
+DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
