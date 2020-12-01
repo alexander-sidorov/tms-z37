@@ -1,5 +1,6 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
-def index(*a, **kw):
-    return HttpResponse("blog works")
+def index(request):
+    response = render(request, "blog/index.html")
+    return response
