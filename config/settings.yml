@@ -13,6 +13,7 @@ default:
   DIRS_SOURCES:
     - src
   DIRS_TEMPLATES:
+    - src/applications/blog/templates/
     - src/applications/hello/templates/
     - src/applications/landing/templates/
     - src/project/templates/
