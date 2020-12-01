@@ -1,27 +1,26 @@
 {% extends "_base.html" %}
 
 {% block main %}
-  <h1>All posts</h1>
+  <h1>/b/</h1>
 
-  <form method="post" action="/b/new/">
-    {% csrf_token %}
-    <p>
-      <label for="id_title">Title</label>
-      <input id="id_title" type="text" name="title">
-    </p>
-    <p>
-      <label for="id_content">Content</label>
-      <textarea id="id_title" name="content"></textarea>
-    </p>
-    <button type="submit">Create Post</button>
+  <form method="post" action="/b/new/" class="post-form">
+    <div class="post-form-controls">
+      <label for="id_content">What's up?</label>
+      {% csrf_token %}
+      <button type="submit">Tell</button>
+    </div>
+    <div class="post-form-fields">
+      <textarea id="id_content" name="content"></textarea>
+    </div>
   </form>
 
+
   {% for post in object_list %}
-    <article>
-      <h2>{{ post.title }}</h2>
-      <p>{{ post.content }}</p>
+    <article class="post">
+      <section>{{ post.content }}</section>
       <p>{{ post.created_at }}</p>
-      <p>Likes: {{ post.nr_likes }}</p>
+      <p>{{ post.nr_likes }}</p>
+      <p>{{ post.nr_views }}</p>
     </article>
   {% endfor %}
 

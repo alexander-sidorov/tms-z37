@@ -15,11 +15,9 @@ def all_posts_view(request):
 
 
 def new_post_view(request: HttpRequest):
-    title = request.POST["title"]
     content = request.POST["content"]
 
     post = Post(
-        title=title,
         content=content,
     )
     post.save()
