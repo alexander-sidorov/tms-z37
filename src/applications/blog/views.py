@@ -5,7 +5,7 @@ from django.shortcuts import render
 from applications.blog.models import Post
 
 
-def index(request):
+def all_posts_view(request):
     context = {
         "object_list": Post.objects.all(),
     }
