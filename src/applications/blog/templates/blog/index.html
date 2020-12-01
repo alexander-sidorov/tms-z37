@@ -2,14 +2,14 @@
 
 {% block main %}
   <h1>All posts</h1>
-  <article>
-    <h2>Post 1</h2>
-    <p>xxx</p>
-    <p>yyy</p>
-  </article>
-  <article>
-    <h2>Post 2</h2>
-    <p>fdsfdsfs</p>
-    <p>i87fy87ds</p>
-  </article>
+
+  {% for post in object_list %}
+    <article>
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.content }}</p>
+      <p>{{ post.created_at }}</p>
+      <p>Likes: {{ post.nr_likes }}</p>
+    </article>
+  {% endfor %}
+
 {% endblock %}

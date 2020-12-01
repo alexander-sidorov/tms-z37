@@ -1,6 +1,12 @@
 from django.shortcuts import render
 
+from applications.blog.models import Post
+
 
 def index(request):
-    response = render(request, "blog/index.html")
+    context = {
+        "object_list": Post.objects.all(),
+    }
+
+    response = render(request, "blog/index.html", context=context)
     return response
