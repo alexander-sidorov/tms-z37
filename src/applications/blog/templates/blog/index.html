@@ -3,16 +3,18 @@
 {% block main %}
   <h1>/b/</h1>
 
-  <form method="post" action="/b/new/" class="post-form">
-    <div class="post-form-controls">
-      <label for="id_content">What's up?</label>
-      {% csrf_token %}
-      <button type="submit">Tell</button>
-    </div>
-    <div class="post-form-fields">
-      <textarea id="id_content" name="content"></textarea>
-    </div>
-  </form>
+  {#  <form method="post" action="/b/new/" class="post-form">#}
+  {#    <div class="post-form-controls">#}
+  {#      <label for="id_content">What's up?</label>#}
+  {#      {% csrf_token %}#}
+  {#      <button type="submit">Tell</button>#}
+  {#    </div>#}
+  {#    <div class="post-form-fields">#}
+  {#      <textarea id="id_content" name="content"></textarea>#}
+  {#    </div>#}
+  {#  </form>#}
+
+  <a href="/b/new/"><h2>New post</h2></a>
 
 
   {% for post in object_list %}

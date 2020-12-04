@@ -4,16 +4,13 @@
   <h1>Create new post</h1>
 
   <form method="post" action="/b/new/" class="post-form">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type="submit">Tell</button>
-    {#    <div class="post-form-controls">#}
-    {#      <label for="id_content">What's up?</label>#}
-    {#      {% csrf_token %}#}
-    {#      <button type="submit">Tell</button>#}
-    {#    </div>#}
-    {#    <div class="post-form-fields">#}
-    {#      <textarea id="id_content" name="content"></textarea>#}
-    {#    </div>#}
+    <div class="post-form-controls">
+      {{ form.content.label }}
+      {% csrf_token %}
+      <button type="submit">Tell</button>
+    </div>
+    <div class="post-form-fields">
+      {{ form.content }}
+    </div>
   </form>
 {% endblock %}
