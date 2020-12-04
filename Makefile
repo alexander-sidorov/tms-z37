@@ -31,7 +31,7 @@ run-prod:
 .PHONY: sh
 sh:
 	$(call log, starting Python shell)
-	$(RUN) ipython
+	$(PYTHON) src/manage.py shell
 
 
 .PHONY: venv
