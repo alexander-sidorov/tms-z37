@@ -8,7 +8,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from tests.functional.pages.abstract import PageObject
 
-ARTIFACTS_DIR = (Path(__file__).parent / "artifacts").resolve()
+ARTIFACTS_DIR = (Path(__file__).parent.parent / "artifacts").resolve()
+assert (
+    ARTIFACTS_DIR.is_dir()
+), f'artifacts dir does not exist at "{ARTIFACTS_DIR.as_posix()}"'
 
 
 def screenshot_on_failure(test):
