@@ -1,9 +1,7 @@
 {% extends "_base.html" %}
-
 {% block main %}
   <h2 id="greeting_display_id">Hello {{ name }}</h2>
   <p id="address_display_id">You are in {{ address }}</p>
-
   <form action="/h/" method="post">
     {{ form.as_p }}
     <p>
@@ -11,7 +9,6 @@
     </p>
     {% csrf_token %}
   </form>
-
   <form action="/h/reset/" method="post">
     <button id="reset_id" type="submit">Reset</button>
     {% csrf_token %}

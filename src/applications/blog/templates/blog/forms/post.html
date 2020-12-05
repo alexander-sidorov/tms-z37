@@ -1,0 +1,9 @@
+<form method="post" action="/b/new/" class="post-form">
+  {% csrf_token %}
+  <div class="post-form-fields">
+    {{ form.content }}
+  </div>
+  <div class="post-form-controls">
+    <button type="submit">{{ form_action_name }}</button>
+  </div>
+</form>

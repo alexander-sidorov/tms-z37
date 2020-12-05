@@ -1,6 +1,10 @@
+from typing import Dict
+
 from django import forms
 from django.views.generic import FormView
 from django.views.generic import RedirectView
+
+from framework.mixins import ExtendedContextMixin
 
 
 class HelloForm(forms.Form):
@@ -8,23 +12,19 @@ class HelloForm(forms.Form):
     address = forms.CharField()
 
 
-class HelloView(FormView):
+class HelloView(ExtendedContextMixin, FormView):
     form_class = HelloForm
     success_url = "/h/"
     template_name = "hello/index.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
+    def get_extended_context(self) -> Dict:
         name = self.request.session.get("name")
         address = self.request.session.get("address")
 
-        context.update(
-            {
-                "address": address or "nowhere",
-                "name": name or "anonymous",
-            }
-        )
+        context = {
+            "address": address or "nowhere",
+            "name": name or "anonymous",
+        }
 
         return context
 

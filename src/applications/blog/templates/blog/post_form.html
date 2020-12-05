@@ -1,16 +1,6 @@
 {% extends "_base.html" %}
-
 {% block main %}
-  <h1>Create new post</h1>
-
-  <form method="post" action="/b/new/" class="post-form">
-    <div class="post-form-controls">
-      {{ form.content.label }}
-      {% csrf_token %}
-      <button type="submit">Tell</button>
-    </div>
-    <div class="post-form-fields">
-      {{ form.content }}
-    </div>
-  </form>
+  {% with "Create a post" as form_action_name %}
+    {% include "blog/forms/post.html" %}
+  {% endwith %}
 {% endblock %}
