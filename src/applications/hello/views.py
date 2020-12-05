@@ -8,8 +8,8 @@ from framework.mixins import ExtendedContextMixin
 
 
 class HelloForm(forms.Form):
-    name = forms.CharField()
-    address = forms.CharField()
+    name = forms.CharField(required=False)
+    address = forms.CharField(required=False)
 
 
 class HelloView(ExtendedContextMixin, FormView):
@@ -17,13 +17,16 @@ class HelloView(ExtendedContextMixin, FormView):
     success_url = "/h/"
     template_name = "hello/index.html"
 
+    def get_initial(self):
+        return self.get_extended_context()
+
     def get_extended_context(self) -> Dict:
         name = self.request.session.get("name")
         address = self.request.session.get("address")
 
         context = {
-            "address": address or "nowhere",
-            "name": name or "anonymous",
+            "address": address,
+            "name": name,
         }
 
         return context
