@@ -2,7 +2,6 @@ from datetime import datetime
 from functools import wraps
 from pathlib import Path
 
-from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
@@ -10,16 +9,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from tests.functional.pages.abstract import PageObject
 
 ARTIFACTS_DIR = (Path(__file__).parent / "artifacts").resolve()
-
-
-def build_chrome():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("headless")
-
-    browser = webdriver.Chrome(options=chrome_options)
-    browser.implicitly_wait(4)
-
-    return browser
 
 
 def screenshot_on_failure(test):
