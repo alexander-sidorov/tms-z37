@@ -1,7 +1,7 @@
 from typing import Dict
 
 from django import forms
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
@@ -34,13 +34,13 @@ class NewPostView(CreateView):
     http_method_names = ["post"]
     model = Post
     fields = ["content"]
-    success_url = "/b/"
+    success_url = reverse_lazy("blog:all")
 
 
 class WipeView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         Post.objects.all().delete()
-        return "/b/"
+        return reverse_lazy("blog:all")
 
 
 class SinglePostView(DetailView):
@@ -49,10 +49,15 @@ class SinglePostView(DetailView):
 
 
 class UpdatePostView(UpdateView):
-    pass
+    model = Post
+    fields = ["content"]
+
+    def get_success_url(self):
+        success_url = reverse_lazy("blog:post", kwargs={"pk": self.object.pk})
+        return success_url
 
 
 class DeletePostView(DeleteView):
     http_method_names = ["post"]
     model = Post
-    success_url = reverse("all")
+    success_url = reverse_lazy("blog:all")

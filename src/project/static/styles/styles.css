@@ -141,11 +141,16 @@ main {
   padding: 1rem;
 }
 
-.post .views {
+.post .modify {
   color: var(--color-meta);
   font-size: calc(var(--font-size) * 0.6);
   grid-column: 1/2;
   grid-row: 1/2;
+}
+
+.post .modify button {
+  background: none;
+  border: 0;
 }
 
 .post .date {
@@ -163,6 +168,12 @@ main {
   margin-bottom: 1rem;
   margin-top: 1rem;
   padding: 1rem;
+}
+
+.post .views {
+  grid-column: 1/2;
+  grid-row: 10/11;
+  user-select: none;
 }
 
 .post .likes {
