@@ -46,7 +46,9 @@ class PageObject:
         return self.browser.title
 
 
-class PageElement:
+class _AbstractPageElement:
+    _multiple = False
+
     def __init__(self, by, value):
         self._by = by
         self._value = value
@@ -55,7 +57,20 @@ class PageElement:
         if not page_object:
             return self
 
-        return page_object.browser.find_element(self._by, self._value)
+        finder = {
+            True: page_object.browser.find_elements,
+            False: page_object.browser.find_element,
+        }[self._multiple]
+
+        return finder(self._by, self._value)
+
+
+class PageElement(_AbstractPageElement):
+    pass
+
+
+class PageElements(_AbstractPageElement):
+    _multiple = True
 
 
 class PageResource:

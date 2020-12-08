@@ -16,7 +16,7 @@
   <form method="post" action="{% url 'blog:wipe' %}">
     {% csrf_token %}
     <div class="post-form-controls">
-      <button type="submit">Wipe</button>
+      <button id="id_post_form_wipe" type="submit">Wipe</button>
     </div>
   </form>
 
