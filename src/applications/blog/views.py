@@ -4,7 +4,6 @@ from django import forms
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
-from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
@@ -21,7 +20,7 @@ class PostForm(forms.ModelForm):
 
 
 class AllPostsView(ExtendedContextMixin, ListView):
-    template_name = "blog/index.html"
+    template_name = "blog/all.html"
     model = Post
 
     def get_extended_context(self) -> Dict:
@@ -31,30 +30,26 @@ class AllPostsView(ExtendedContextMixin, ListView):
 
 
 class NewPostView(CreateView):
+    fields = ["content"]
     http_method_names = ["post"]
     model = Post
-    fields = ["content"]
     success_url = reverse_lazy("blog:all")
 
 
-class WipeView(RedirectView):
+class WipeAllPostsView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         Post.objects.all().delete()
         return reverse_lazy("blog:all")
 
 
-class SinglePostView(DetailView):
-    template_name = "blog/post.html"
-    model = Post
-
-
-class UpdatePostView(UpdateView):
-    model = Post
+class PostView(UpdateView):
     fields = ["content"]
+    model = Post
+    template_name = "blog/post.html"
 
-    def get_success_url(self):
-        success_url = reverse_lazy("blog:post", kwargs={"pk": self.object.pk})
-        return success_url
+    def form_valid(self, form):
+        self.object.edited = True
+        return super().form_valid(form)
 
 
 class DeletePostView(DeleteView):

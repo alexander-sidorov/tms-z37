@@ -1,13 +1,15 @@
 {% extends "_base.html" %}
+
 {% block main %}
+
   <h1>/b/{{ object.pk }}</h1>
-  <article class="post">
-    <span class="date">{% if post.edited %}✏️&nbsp;{% endif %}{{ object.created_at }}</span>
-    <span class="content">{{ object.content }}</span>
-    <span class="views">👁&nbsp;{{ object.nr_views }}</span>
-    <span class="likes" id="post_likes_{{ object.pk }}" onclick="like(this)">{{ object.nr_likes }}</span>
-    <form class="modify" method="get" action="{% url 'blog:update' post.pk %}">
-      <button type="submit">✍️</button>
-    </form>
-  </article>
+
+  {% include "blog/fragments/post_article.html" %}
+
+  {% with "Update" as form_action_name %}
+    {% with object.get_absolute_url as form_action_url %}
+      {% include "blog/fragments/post_form.html" %}
+    {% endwith %}
+  {% endwith %}
+
 {% endblock %}
