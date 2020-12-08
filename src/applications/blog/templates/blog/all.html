@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 
-{% block main %}
+{% block title %}Blog App{% endblock %}
 
-  <h1>/b/</h1>
+{% block main %}
 
   {% with "Tell" as form_action_name %}
     {% url 'blog:new' as form_action_url %}

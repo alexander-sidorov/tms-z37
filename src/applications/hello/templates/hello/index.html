@@ -1,16 +1,25 @@
 {% extends "_base.html" %}
+
+{% block title %}Helloworld App{% endblock %}
+
 {% block main %}
+
   <h2 id="greeting_display_id">Hello {{ name|default:"anonymous" }}</h2>
   <p id="address_display_id">You are in {{ address|default:"nowhere" }}</p>
-  <form action="/h/" method="post">
+
+  <form action="{% url 'hello:greet' %}" method="post">
     {{ form.as_p }}
     <p>
       <button id="submit_id" type="submit">Send</button>
     </p>
     {% csrf_token %}
   </form>
-  <form action="/h/reset/" method="post">
-    <button id="reset_id" type="submit">Reset</button>
+
+  <form action="{% url 'hello:reset' %}" method="post">
+    <p>
+      <button id="reset_id" type="submit">Reset</button>
+    </p>
     {% csrf_token %}
   </form>
+
 {% endblock %}

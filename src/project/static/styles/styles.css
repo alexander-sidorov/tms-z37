@@ -29,6 +29,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Yeseva One", cursive;
 }
 
+hr {
+  margin-bottom: 2rem;
+}
+
 a {
   color: darkorange;
 }
