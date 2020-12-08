@@ -29,6 +29,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Yeseva One", cursive;
 }
 
+hr {
+  margin-bottom: 2rem;
+}
+
 a {
   color: darkorange;
 }
@@ -85,59 +89,112 @@ main {
   padding: 2rem;
 }
 
-.url {
-  background-color: black;
-  color: limegreen;
-  font-family: "Fira Code", Courier, monospace;
-  font-size: 200%;
-  font-weight: bold;
-  padding: 12px;
-}
-
-.pin {
-  background-color: saddlebrown;
-  color: yellow;
-  font-family: "Fira Code", Courier, monospace;
-  font-size: 120%;
-  padding: 4px;
-}
-
-
-.environ-table {
-  border: 1px darkslategrey solid;
-  display: grid;
-  grid-row-gap: 8px;
-  grid-template-columns: 100%;
-  grid-template-rows: auto;
-}
-
-.environ-table .pair {
-  background-color: rgba(0, 169, 0, 0.1);
-  display: grid;
-  font-family: "Fira Code", Courier, monospace;
-  font-size: calc(var(--font-size) * 0.5);
-  grid-column-gap: 16px;
-  grid-template-columns: 24% auto;
-  grid-template-rows: 100%;
-  padding-left: 8px;
-}
-
-.environ-table .pair > p {
-  text-align: left;
-}
-
-.environ-table .pair > p:nth-of-type(1) {
-  font-weight: bold;
-}
-
-.environ-table .http {
-  background-color: rgba(0, 21, 205, 0.1);
-}
-
-.code {
-  background-color: #040a16;
+.post-form {
   border: #173470 1px solid;
-  color: orangered;
-  font-family: "Fira Code", monospace;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, auto);
+  margin-bottom: 4rem;
   padding: 1rem;
+}
+
+.post-form textarea {
+  background-color: #05265d;
+  border: #173470 1px solid;
+  border-radius: 0.5rem;
+  color: orange;
+  font-family: "Fira Code", Courier, monospace;
+  font-size: calc(var(--font-size) * 0.8);
+  padding: 1rem;
+  resize: none;
+}
+
+.post-form .post-form-fields {
+  display: grid;
+  grid-column: 1/11;
+  grid-row: 1/10;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+}
+
+.post-form .post-form-controls {
+  grid-column: 10/11;
+  grid-row: 10/11;
+}
+
+.post-form-controls button {
+  background-color: #05265d;
+  border: #173470 1px solid;
+  border-radius: 0.5rem;
+  color: orange;
+  font-size: calc(var(--font-size) * 0.8);
+  width: 100%;
+}
+
+.post {
+  border: #427fff 1px solid;
+  border-radius: 0.5rem;
+  --color-controls: #669eff;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, auto);
+  margin-bottom: 4rem;
+  padding: 1rem;
+  --font-size-controls: calc(var(--font-size) * 0.6);
+}
+
+.post .delete {
+  color: var(--color-controls);
+  font-size: var(--font-size-controls);
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.post .delete button {
+  background: none;
+  border: 0;
+}
+
+.post .date {
+  color: var(--color-controls);
+  font-size: var(--font-size-controls);
+  grid-column: 9/11;
+  grid-row: 1/2;
+}
+
+.post .content {
+  border: #022469 1px solid;
+  border-radius: 0.5rem;
+  grid-column: 1/11;
+  grid-row: 2/10;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.post .views {
+  grid-column: 1/2;
+  grid-row: 10/11;
+  user-select: none;
+}
+
+.post .likes {
+  grid-column: 9/11;
+  grid-row: 10/11;
+  user-select: none;
+}
+
+.post .likes::before {
+  content: "💛\00a0";
+}
+
+.post .likes:active {
+  color: red;
+}
+
+.post .likes:active::before {
+  content: "❤️\00a0";
 }

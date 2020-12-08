@@ -1,0 +1,19 @@
+<article class="post">
+
+  <form class="delete" method="post" action="{% url 'blog:delete' pk=object.pk %}">
+    {% csrf_token %}
+    <button type="submit">❌</button>
+  </form>
+
+  <a href="{{ object.get_absolute_url }}" class="date">
+    {% if object.edited %}✏️&nbsp;{% endif %}
+    {{ object.created_at }}
+  </a>
+
+  <span class="content">{{ object.content }}</span>
+
+  <span class="views">👁&nbsp;{{ object.nr_views }}</span>
+
+  <span class="likes">{{ object.nr_likes }}</span>
+
+</article>
