@@ -168,4 +168,17 @@ main {
 .post .likes {
   grid-column: 9/11;
   grid-row: 10/11;
+  user-select: none;
+}
+
+.post .likes::before {
+  content: "💛\00a0";
+}
+
+.post .likes:active {
+  color: red;
+}
+
+.post .likes:active::before {
+  content: "❤️\00a0";
 }

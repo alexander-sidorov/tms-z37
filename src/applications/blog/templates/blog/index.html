@@ -1,17 +1,45 @@
 {% extends "_base.html" %}
 {% block main %}
+  <script>
+      const like = function (element) {
+          let nr_likes = parseInt(element.textContent);
+          nr_likes += 1;
+
+          let data = {nr_likes: nr_likes};
+
+          fetch("/b/xxx/", {
+              method: "POST",
+              body: JSON.stringify(data),
+          }).then(
+              resp => {
+                  resp.json().then(
+                      data => {
+                          console.log(JSON.stringify(data));
+                          element.textContent = nr_likes;
+                      }
+                  );
+              }
+          );
+      }
+  </script>
   <h1>/b/</h1>
   {% with "Tell" as form_action_name %}
     {% include "blog/forms/post.html" %}
   {% endwith %}
-  {% for post in object_list %}
-    <article class="post">
-      <span class="date">{{ post.created_at }}</span>
-      <span class="content">{{ post.content }}</span>
-      <span class="views">{% if post.edited %}✏️&nbsp;{% endif %}👁&nbsp;{{ post.nr_views }}</span>
-      <span class="likes">💛&nbsp;{{ post.nr_likes }}</span>
-    </article>
-  {% endfor %}
+  <div id="posts-container">
+    {% for post in object_list %}
+      <article class="post" id="post_{{ post.pk }}">
+        <span class="date">{{ post.created_at }}</span>
+        <span class="content">{{ post.content }}</span>
+        <span class="views">{% if post.edited %}✏️&nbsp;{% endif %}👁&nbsp;{{ post.nr_views }}</span>
+        <span class="likes" id="post_likes_{{ post.pk }}" onclick="like(this)">{{ post.nr_likes }}</span>
+        <form class="delete-post" method="post" action="/b/post/{{ post.pk }}/delete/">
+          {% csrf_token %}
+          <button type="submit">❌</button>
+        </form>
+      </article>
+    {% endfor %}
+  </div>
   <form method="post" action="/b/wipe/">
     {% csrf_token %}
     <div class="post-form-controls">
