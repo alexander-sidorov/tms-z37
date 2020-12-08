@@ -1,6 +1,6 @@
 <article class="post">
 
-  <form class="delete" method="post" action="{% url 'blog:delete-post' pk=object.pk %}">
+  <form class="delete" method="post" action="{% url 'blog:delete' pk=object.pk %}">
     {% csrf_token %}
     <button type="submit">❌</button>
   </form>
