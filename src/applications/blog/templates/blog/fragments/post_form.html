@@ -1,0 +1,12 @@
+<form method="post" action="{{ form_action_url }}" class="post-form">
+  {% csrf_token %}
+
+  <div class="post-form-fields">
+    {{ form.content }}
+  </div>
+
+  <div class="post-form-controls">
+    <button id="id_post_form_submit" type="submit">{{ form_action_name }}</button>
+  </div>
+
+</form>

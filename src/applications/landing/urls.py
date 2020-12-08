@@ -1,7 +1,10 @@
 from django.urls import path
 
-from applications.landing.views import IndexView
+from applications.landing import views
+from applications.landing.apps import LandingConfig
+
+app_name = LandingConfig.label
 
 urlpatterns = [
-    path("", IndexView.as_view()),
+    path("", views.IndexView.as_view(), name="index"),
 ]

@@ -1,27 +1,35 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Z37</title>
   <link href="{% static 'styles/styles.css' %}" rel="stylesheet"/>
   <link href="{% static 'images/logo.png' %}" rel="shortcut icon" type="image/png"/>
 </head>
+
 <body>
+
 <header>
   <div class="flat">
     <a href="/"><img alt="Logo" height="100rem" src="{% static 'images/logo.png' %}"></a>
     <a href="/"><h1>Z37 study project</h1></a>
   </div>
   <nav>
-    <p><a href="/"><span>/</span></a></p>
-    <p><a href="/e/"><span>/e/</span></a></p>
-    <p><a href="/h/"><span>/h/</span></a></p>
-    <p><a href="/b/"><span>/b/</span></a></p>
+    <p><a href="{% url 'landing:index' %}"><span>/</span></a></p>
+    <p><a href="{% url 'error' %}"><span>/e/</span></a></p>
+    <p><a href="{% url 'hello:greet' %}"><span>/h/</span></a></p>
+    <p><a href="{% url 'blog:all' %}"><span>/b/</span></a></p>
   </nav>
 </header>
+
 <main>
+  <h1>{% block title %}{% endblock %}</h1>
+  <hr>
   {% block main %}{% endblock %}
 </main>
+
 </body>
+
 </html>

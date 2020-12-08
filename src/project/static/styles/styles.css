@@ -29,6 +29,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Yeseva One", cursive;
 }
 
+hr {
+  margin-bottom: 2rem;
+}
+
 a {
   color: darkorange;
 }
@@ -133,24 +137,30 @@ main {
 .post {
   border: #427fff 1px solid;
   border-radius: 0.5rem;
+  --color-controls: #669eff;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, auto);
   margin-bottom: 4rem;
-  --color-meta: #669eff;
   padding: 1rem;
+  --font-size-controls: calc(var(--font-size) * 0.6);
 }
 
-.post .views {
-  color: var(--color-meta);
-  font-size: calc(var(--font-size) * 0.6);
+.post .delete {
+  color: var(--color-controls);
+  font-size: var(--font-size-controls);
   grid-column: 1/2;
   grid-row: 1/2;
 }
 
+.post .delete button {
+  background: none;
+  border: 0;
+}
+
 .post .date {
-  color: var(--color-meta);
-  font-size: calc(var(--font-size) * 0.6);
+  color: var(--color-controls);
+  font-size: var(--font-size-controls);
   grid-column: 9/11;
   grid-row: 1/2;
 }
@@ -165,7 +175,26 @@ main {
   padding: 1rem;
 }
 
+.post .views {
+  grid-column: 1/2;
+  grid-row: 10/11;
+  user-select: none;
+}
+
 .post .likes {
   grid-column: 9/11;
   grid-row: 10/11;
+  user-select: none;
+}
+
+.post .likes::before {
+  content: "💛\00a0";
+}
+
+.post .likes:active {
+  color: red;
+}
+
+.post .likes:active::before {
+  content: "❤️\00a0";
 }

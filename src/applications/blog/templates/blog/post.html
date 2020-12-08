@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+
+{% block title %}/b/{{ object.pk }}{% endblock %}
+
+{% block main %}
+
+  {% include "blog/fragments/post_article.html" %}
+
+  {% with "Update" as form_action_name %}
+    {% with object.get_absolute_url as form_action_url %}
+      {% include "blog/fragments/post_form.html" %}
+    {% endwith %}
+  {% endwith %}
+
+{% endblock %}

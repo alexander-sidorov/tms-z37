@@ -1,0 +1,23 @@
+{% extends "_base.html" %}
+
+{% block title %}Blog App{% endblock %}
+
+{% block main %}
+
+  {% with "Tell" as form_action_name %}
+    {% url 'blog:new' as form_action_url %}
+    {% include "blog/fragments/post_form.html" %}
+  {% endwith %}
+
+  {% for object in object_list %}
+    {% include "blog/fragments/post_article.html" %}
+  {% endfor %}
+
+  <form method="post" action="{% url 'blog:wipe' %}">
+    {% csrf_token %}
+    <div class="post-form-controls">
+      <button id="id_post_form_wipe" type="submit">Wipe</button>
+    </div>
+  </form>
+
+{% endblock %}
