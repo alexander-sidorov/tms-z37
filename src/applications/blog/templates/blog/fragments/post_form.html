@@ -1,14 +1,16 @@
-<form method="post" action="{{ form_action_url }}" class="post-form">
-  {% csrf_token %}
+{% if user.is_superuser or object.author == user %}
+  <form method="post" action="{{ form_action_url }}" class="post-form">
+    {% csrf_token %}
 
-  <div class="post-form-fields">
-    {{ form.content }}
-  </div>
+    <div class="post-form-fields">
+      {{ form.content }}
+    </div>
 
-  <input type="hidden" name="author_id" value="{{ user.id }}">
+    <input type="hidden" name="author_id" value="{{ user.id }}">
 
-  <div class="post-form-controls">
-    <button id="id_post_form_submit" type="submit">{{ form_action_name }}</button>
-  </div>
+    <div class="post-form-controls">
+      <button id="id_post_form_submit" type="submit">{{ form_action_name }}</button>
+    </div>
 
-</form>
+  </form>
+{% endif %}
