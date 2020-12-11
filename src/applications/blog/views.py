@@ -36,8 +36,10 @@ class NewPostView(CreateView):
     success_url = reverse_lazy("blog:all")
 
     def form_valid(self, form):
-        result = super().form_valid(form)
-        return result
+        post = form.save(commit=False)
+        post.author = self.request.user
+
+        return super().form_valid(form)
 
 
 class WipeAllPostsView(RedirectView):
