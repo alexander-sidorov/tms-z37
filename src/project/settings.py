@@ -3,6 +3,7 @@ from pathlib import Path
 
 import dj_database_url
 import sentry_sdk
+from django.urls import reverse_lazy
 from dynaconf import settings as dyn
 
 DEBUG = dyn.MODE_DEBUG
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     "applications.blog.apps.BlogConfig",
     "applications.hello.apps.HelloConfig",
     "applications.landing.apps.LandingConfig",
+    "applications.onboarding.apps.OnboardingConfig",
 ]
 
 MIDDLEWARE = [
@@ -88,6 +90,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+if DEBUG:
+    AUTH_PASSWORD_VALIDATORS = []
+
+LOGIN_URL = reverse_lazy("onboarding:sign-in")
+LOGIN_REDIRECT_URL = reverse_lazy("landing:index")
 
 LANGUAGE_CODE = "en-us"
 

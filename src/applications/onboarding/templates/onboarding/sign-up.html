@@ -1,0 +1,43 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Sign Up{% endblock %}
+{% block head %}
+  <link href="{% static 'onboarding/sign-up.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block main %}
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-field username">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.username.errors }}
+      </div>
+      <div class="form-field email">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {{ form.email.errors }}
+      </div>
+      <div class="form-field password1">
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+      </div>
+      <div class="form-field password2">
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+      </div>
+    </div>
+    {% csrf_token %}
+    <input type="submit" value="Sign Up">
+    <input name="next" type="hidden" value="{{ next }}">
+  </form>
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+         please login with an account that has access.</p>
+    {% else %}
+      <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %}
+{% endblock %}
