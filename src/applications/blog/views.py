@@ -35,6 +35,10 @@ class NewPostView(CreateView):
     model = Post
     success_url = reverse_lazy("blog:all")
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        return result
+
 
 class WipeAllPostsView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):

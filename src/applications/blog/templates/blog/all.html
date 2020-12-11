@@ -4,10 +4,12 @@
 
 {% block main %}
 
+{% if not user.is_anonymous %}
   {% with "Tell" as form_action_name %}
     {% url 'blog:new' as form_action_url %}
     {% include "blog/fragments/post_form.html" %}
   {% endwith %}
+{% endif %}
 
   {% for object in object_list %}
     {% include "blog/fragments/post_article.html" %}

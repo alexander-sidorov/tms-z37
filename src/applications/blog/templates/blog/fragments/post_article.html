@@ -7,7 +7,7 @@
 
   <a href="{{ object.get_absolute_url }}" class="date">
     {% if object.edited %}✏️&nbsp;{% endif %}
-    {{ object.created_at }}
+    {{ object.created_at }} / {{ user.email }}
   </a>
 
   <span class="content">{{ object.content }}</span>

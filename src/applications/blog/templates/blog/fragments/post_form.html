@@ -5,6 +5,8 @@
     {{ form.content }}
   </div>
 
+  <input type="hidden" name="author_id" value="{{ user.id }}">
+
   <div class="post-form-controls">
     <button id="id_post_form_submit" type="submit">{{ form_action_name }}</button>
   </div>
