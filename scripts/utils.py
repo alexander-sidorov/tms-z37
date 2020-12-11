@@ -3,7 +3,7 @@ import sys
 from urllib.parse import urlsplit
 
 
-def get_setting(setting_name, default=None, *, convert=lambda _value: _value or None):
+def get_setting(setting_name, default=None, convert=lambda _value: _value or None):
     value = os.getenv(setting_name)
     if not value:
         try:
