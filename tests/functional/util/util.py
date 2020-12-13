@@ -37,7 +37,7 @@ def screenshot_on_failure(test):
 def validate_redirect(page: PageObject, url: str):
     try:
         redirected = WebDriverWait(page.browser, 4).until(
-            expected_conditions.url_matches(url)
+            expected_conditions.url_to_be(url)
         )
         assert redirected
     except TimeoutException as err:

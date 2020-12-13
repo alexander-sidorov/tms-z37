@@ -4,6 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.remote.webelement import WebElement
 
 from tests.functional.pages.blog import AllPostsPage
+from tests.functional.util.actions.onboarding import sign_in
 from tests.functional.util.actions.onboarding import sign_up
 from tests.functional.util.consts import URL_BLOG
 from tests.functional.util.util import screenshot_on_failure
@@ -24,7 +25,7 @@ def test_single_user(browser, request):
     page = AllPostsPage(browser, URL_BLOG)
     validate_number_of_posts(page, 0)
 
-    sign_up(browser)
+    sign_up(page.browser)
 
     content = "xxx"
 
@@ -41,6 +42,48 @@ def test_single_user(browser, request):
     create_post(page, "zzz")
     validate_number_of_posts(page, 2)
 
+    wipe_posts(page)
+    validate_number_of_posts(page, 0)
+
+
+@pytest.mark.functional
+@screenshot_on_failure
+def test_two_users(browser, request):
+    page = AllPostsPage(browser, URL_BLOG)
+    validate_number_of_posts(page, 0)
+
+    user1 = sign_up(page.browser)
+    user2 = sign_up(page.browser)
+
+    sign_in(page.browser, user1)
+
+    create_post(page, user1.username)
+    validate_number_of_posts(page, 1)
+
+    sign_in(page.browser, user2)
+    validate_number_of_posts(page, 1)
+    create_post(page, user2.username)
+    validate_number_of_posts(page, 2)
+
+    sign_in(page.browser, user1)
+    post = get_post(page, 0)
+    validate_can_delete_post(post, False)
+    post = get_post(page, 1)
+    validate_can_delete_post(post, True)
+
+    sign_in(page.browser, user2)
+    post = get_post(page, 0)
+    validate_can_delete_post(post, True)
+    post = get_post(page, 1)
+    validate_can_delete_post(post, False)
+
+    sign_in(page.browser, user1)
+    wipe_posts(page)
+    validate_number_of_posts(page, 1)
+    post = get_post(page, 0)
+    validate_can_delete_post(post, False)
+
+    sign_in(page.browser, user2)
     wipe_posts(page)
     validate_number_of_posts(page, 0)
 
@@ -114,7 +157,7 @@ def validate_can_delete_post(post: WebElement, can: bool) -> None:
 def create_post(page: AllPostsPage, content: str) -> None:
     page.content = content
     page.tell.click()
-    validate_redirect(page.browser, URL_BLOG)
+    validate_redirect(page, URL_BLOG)
 
 
 def delete_post(page: AllPostsPage, post: WebElement) -> None:

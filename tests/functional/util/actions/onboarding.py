@@ -1,12 +1,16 @@
 import os
+import urllib.parse
 from typing import Optional
 
 from pydantic import BaseModel
 
 from tests.functional.pages.abstract import WebDriverT
+from tests.functional.pages.sign_in import SignInPage
 from tests.functional.pages.sign_up import SignUpPage
-from tests.functional.util.consts import SIGN_UP_URL
+from tests.functional.util.consts import URL_SERVICE
 from tests.functional.util.consts import URL_LANDING
+from tests.functional.util.consts import URL_SIGN_IN
+from tests.functional.util.consts import URL_SIGN_UP
 from tests.functional.util.util import validate_redirect
 
 
@@ -21,7 +25,7 @@ def sign_up(browser: WebDriverT) -> Credentials:
     credentials = Credentials()
 
     try:
-        page = SignUpPage(browser, SIGN_UP_URL)
+        page = SignUpPage(browser, URL_SIGN_UP)
 
         nonce = os.urandom(8).hex()
 
@@ -40,3 +44,24 @@ def sign_up(browser: WebDriverT) -> Credentials:
     validate_redirect(page, current_url)
 
     return credentials
+
+
+def sign_in(browser: WebDriverT, credentials: Credentials) -> None:
+    current_url = browser.current_url
+
+    try:
+        url_next = current_url[len(URL_SERVICE):]
+
+        page = SignInPage(browser, f"{URL_SIGN_IN}?next={url_next}")
+
+        page.password = credentials.password = credentials.password
+        page.username = credentials.username = credentials.username
+
+        page.sign_in.click()
+
+        validate_redirect(page, current_url)
+
+    finally:
+        browser.get(current_url)
+
+    validate_redirect(page, current_url)
