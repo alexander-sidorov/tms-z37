@@ -82,7 +82,7 @@ class PageResource:
         self._ref = ref
 
     def __get__(
-            self, page_object: PageObject, page_object_cls: type
+        self, page_object: PageObject, page_object_cls: type
     ) -> Union["PageResource", str]:
         if not page_object:
             return self
@@ -94,7 +94,7 @@ class PageResource:
             current_url = current_url[:-1]
 
         assert (
-                self._ref in browser.page_source
+            self._ref in browser.page_source
         ), f"no '{self._ref}' found on page at {current_url}"
 
         resource_url = f"{current_url}{self._ref}"

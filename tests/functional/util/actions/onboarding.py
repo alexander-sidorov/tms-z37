@@ -1,5 +1,4 @@
 import os
-import urllib.parse
 from typing import Optional
 
 from pydantic import BaseModel
@@ -7,7 +6,6 @@ from pydantic import BaseModel
 from tests.functional.pages.abstract import WebDriverT
 from tests.functional.pages.sign_in import SignInPage
 from tests.functional.pages.sign_up import SignUpPage
-from tests.functional.util.consts import URL_SERVICE
 from tests.functional.util.consts import URL_LANDING
 from tests.functional.util.consts import URL_SIGN_IN
 from tests.functional.util.consts import URL_SIGN_UP
@@ -50,9 +48,7 @@ def sign_in(browser: WebDriverT, credentials: Credentials) -> None:
     current_url = browser.current_url
 
     try:
-        url_next = current_url[len(URL_SERVICE):]
-
-        page = SignInPage(browser, f"{URL_SIGN_IN}?next={url_next}")
+        page = SignInPage(browser, f"{URL_SIGN_IN}?next={current_url}")
 
         page.password = credentials.password = credentials.password
         page.username = credentials.username = credentials.username
