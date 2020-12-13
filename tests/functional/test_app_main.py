@@ -1,15 +1,14 @@
 import pytest
 
-from tests.functional.pages import MainPage
+from tests.functional.pages.main import MainPage
+from tests.functional.util.consts import URL_LANDING
 from tests.functional.util.util import screenshot_on_failure
-
-url = "http://localhost:8000"
 
 
 @pytest.mark.functional
 @screenshot_on_failure
 def test(browser, request):
-    page = MainPage(browser, url)
+    page = MainPage(browser, URL_LANDING)
 
     validate_title(page)
     validate_content(page)

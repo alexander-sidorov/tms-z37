@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block main %}
+
+  <form id="id_sign_in_form" method="post">
+    {{ form.as_p }}
+    <button id="id_sign_in_submit" type="submit">Sign In</button>
+    {% csrf_token %}
+    <input id="id_sign_in_next" name="next" type="hidden" value="{{ next }}">
+  </form>
+
+{% endblock %}

@@ -4,20 +4,24 @@
 
 {% block main %}
 
-  {% with "Tell" as form_action_name %}
-    {% url 'blog:new' as form_action_url %}
-    {% include "blog/fragments/post_form.html" %}
-  {% endwith %}
+  {% if not user.is_anonymous %}
+    {% with "Tell" as form_action_name %}
+      {% url 'blog:new' as form_action_url %}
+      {% include "blog/fragments/post_form.html" %}
+    {% endwith %}
+  {% endif %}
 
   {% for object in object_list %}
     {% include "blog/fragments/post_article.html" %}
   {% endfor %}
 
-  <form method="post" action="{% url 'blog:wipe' %}">
-    {% csrf_token %}
-    <div class="post-form-controls">
-      <button id="id_post_form_wipe" type="submit">Wipe</button>
-    </div>
-  </form>
+  {% if not user.is_anonymous %}
+    <form method="post" action="{% url 'blog:wipe' %}">
+      {% csrf_token %}
+      <div class="post-form-controls">
+        <button id="id_post_form_wipe" type="submit">Wipe</button>
+      </div>
+    </form>
+  {% endif %}
 
 {% endblock %}

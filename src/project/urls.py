@@ -8,4 +8,5 @@ urlpatterns = [
     path("b/", include("applications.blog.urls")),
     path("e/", lambda _r: 1 / 0, name="error"),
     path("h/", include("applications.hello.urls")),
+    path("o/", include("applications.onboarding.urls")),
 ]

@@ -13,14 +13,30 @@
 
 <header>
   <div class="flat">
-    <a href="/"><img alt="Logo" height="100rem" src="{% static 'images/logo.png' %}"></a>
-    <a href="/"><h1>Z37 study project</h1></a>
+    <p class="user">
+    </p>
+    <p class="empty"></p>
+    <a href="/" class="logo"><img alt="Logo" height="100rem" src="{% static 'images/logo.png' %}"></a>
+    <a href="/" class="title"><h1>Z37 study project</h1></a>
   </div>
   <nav>
     <p><a href="{% url 'landing:index' %}"><span>/</span></a></p>
+    <p><a href="{% url 'admin:index' %}"><span>/a</span></a></p>
     <p><a href="{% url 'error' %}"><span>/e/</span></a></p>
     <p><a href="{% url 'hello:greet' %}"><span>/h/</span></a></p>
     <p><a href="{% url 'blog:all' %}"><span>/b/</span></a></p>
+    {% if user.is_anonymous %}
+      <p><a href="{% url 'onboarding:sign-up' %}"><span>Sign Up</span></a></p>
+      <p><a href="{% url 'onboarding:sign-in' %}"><span>Sign In</span></a></p>
+    {% else %}
+      <p>
+        <a href="{% url 'onboarding:sign-out' %}">
+          <span>
+            Sign Out<br>{{ user.first_name }}&nbsp;{{ user.last_name }}<br>&lt;{{ user.email }}&gt;
+          </span>
+        </a>
+      </p>
+    {% endif %}
   </nav>
 </header>
 
