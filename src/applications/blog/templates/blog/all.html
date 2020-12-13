@@ -15,7 +15,7 @@
     {% include "blog/fragments/post_article.html" %}
   {% endfor %}
 
-  {% if user.is_superuser %}
+  {% if not user.is_anonymous %}
     <form method="post" action="{% url 'blog:wipe' %}">
       {% csrf_token %}
       <div class="post-form-controls">

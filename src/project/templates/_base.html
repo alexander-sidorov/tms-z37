@@ -14,9 +14,6 @@
 <header>
   <div class="flat">
     <p class="user">
-      {% if user.is_anonymous %}anon{% else %}
-        {{ user.first_name }}&nbsp;{{ user.last_name }} &lt;{{ user.email }}&gt;
-      {% endif %}
     </p>
     <p class="empty"></p>
     <a href="/" class="logo"><img alt="Logo" height="100rem" src="{% static 'images/logo.png' %}"></a>
@@ -28,6 +25,18 @@
     <p><a href="{% url 'error' %}"><span>/e/</span></a></p>
     <p><a href="{% url 'hello:greet' %}"><span>/h/</span></a></p>
     <p><a href="{% url 'blog:all' %}"><span>/b/</span></a></p>
+    {% if user.is_anonymous %}
+      <p><a href="{% url 'onboarding:sign-up' %}"><span>Sign Up</span></a></p>
+      <p><a href="{% url 'onboarding:sign-in' %}"><span>Sign In</span></a></p>
+    {% else %}
+      <p>
+        <a href="{% url 'onboarding:sign-out' %}">
+          <span>
+            Sign Out<br>{{ user.first_name }}&nbsp;{{ user.last_name }}<br>&lt;{{ user.email }}&gt;
+          </span>
+        </a>
+      </p>
+    {% endif %}
   </nav>
 </header>
 

@@ -1,11 +1,10 @@
 {% extends "_base.html" %}
-{% load static %}
+
 {% block title %}Sign Up{% endblock %}
-{% block head %}
-  <link href="{% static 'onboarding/sign-up.css' %}" rel="stylesheet" type="text/css">
-{% endblock %}
+
 {% block main %}
-  <form method="post">
+
+  <form method="post" action="{% url 'onboarding:sign-up' %}" id="id_sign_up_form">
     <div class="form-grid">
       <div class="form-field username">
         {{ form.username.label_tag }}
@@ -29,15 +28,19 @@
       </div>
     </div>
     {% csrf_token %}
-    <input type="submit" value="Sign Up">
-    <input name="next" type="hidden" value="{{ next }}">
+    <button type="submit" id="id_sign_up_submit">"Sign Up"</button>
+    <input name="next" type="hidden" value="{{ next }}" id="id_sign_up_next">
   </form>
+
   {% if next %}
     {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-         please login with an account that has access.</p>
+      <p>
+        Your account doesn't have access to this page.
+        To proceed, please login with an account that has access.
+      </p>
     {% else %}
       <p>Please login to see this page.</p>
     {% endif %}
   {% endif %}
+
 {% endblock %}

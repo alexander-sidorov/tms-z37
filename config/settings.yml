@@ -16,6 +16,7 @@ default:
     - src/applications/blog/templates/
     - src/applications/hello/templates/
     - src/applications/landing/templates/
+    - src/applications/onboarding/templates/
     - src/project/templates/
   HOST: ""
   MODE_DEBUG: true

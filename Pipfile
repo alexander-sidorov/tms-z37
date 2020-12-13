@@ -20,6 +20,7 @@ django = "*"
 dynaconf = { extras = ["yaml"], version = "*" }
 gunicorn = "*"
 psycopg2-binary = "*"
+pydantic = "*"
 sentry-sdk = "*"
 whitenoise = "*"
 
