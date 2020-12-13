@@ -39,7 +39,8 @@ class _ChromeFactory(BrowserFactory):
 
     def build(self):
         options = webdriver.ChromeOptions()
-        options.add_argument("headless")
+        if settings.TEST_BROWSER_HEADLESS:
+            options.add_argument("headless")
 
         browser = webdriver.Chrome(options=options)
         browser.implicitly_wait(4)
@@ -52,7 +53,7 @@ class _FirefoxFactory(BrowserFactory):
 
     def build(self):
         options = webdriver.FirefoxOptions()
-        options.headless = True
+        options.headless = settings.TEST_BROWSER_HEADLESS
 
         browser = webdriver.Firefox(options=options)
         browser.implicitly_wait(4)

@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block main %}
+
+  <form method="post" action="{% url 'onboarding:sign-up' %}" id="id_sign_up_form">
+    <div class="form-grid">
+      <div class="form-field username">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.username.errors }}
+      </div>
+      <div class="form-field email">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {{ form.email.errors }}
+      </div>
+      <div class="form-field password1">
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+      </div>
+      <div class="form-field password2">
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+      </div>
+    </div>
+    {% csrf_token %}
+    <button type="submit" id="id_sign_up_submit">Sign Up</button>
+    <input name="next" type="hidden" value="{{ next }}" id="id_sign_up_next">
+  </form>
+
+{% endblock %}

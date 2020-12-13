@@ -6,10 +6,14 @@
 
   {% include "blog/fragments/post_article.html" %}
 
-  {% with "Update" as form_action_name %}
-    {% with object.get_absolute_url as form_action_url %}
-      {% include "blog/fragments/post_form.html" %}
+  {% if user.is_superuser or user == object.author %}
+
+    {% with "Update" as form_action_name %}
+      {% with object.get_absolute_url as form_action_url %}
+        {% include "blog/fragments/post_form.html" %}
+      {% endwith %}
     {% endwith %}
-  {% endwith %}
+
+  {% endif %}
 
 {% endblock %}

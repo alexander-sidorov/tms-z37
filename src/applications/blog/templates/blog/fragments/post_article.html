@@ -1,13 +1,18 @@
 <article class="post">
 
-  <form class="delete" method="post" action="{% url 'blog:delete' pk=object.pk %}">
-    {% csrf_token %}
-    <button type="submit">❌</button>
-  </form>
+  {% if user.is_superuser or object.author == user %}
+    <form class="delete" method="post" action="{% url 'blog:delete' pk=object.pk %}">
+      {% csrf_token %}
+      <button type="submit">❌</button>
+    </form>
+  {% endif %}
 
   <a href="{{ object.get_absolute_url }}" class="date">
     {% if object.edited %}✏️&nbsp;{% endif %}
     {{ object.created_at }}
+    <br>
+    {{ object.author.first_name }} {{ object.author.last_name }}
+                          &lt;{{ object.author.email }}&gt;
   </a>
 
   <span class="content">{{ object.content }}</span>

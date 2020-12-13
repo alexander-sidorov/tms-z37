@@ -64,6 +64,10 @@ class _AbstractPageElement:
 
         return finder(self._by, self._value)
 
+    def __set__(self, instance, value):
+        element = self.__get__(instance, type(instance))
+        element.send_keys(value)
+
 
 class PageElement(_AbstractPageElement):
     pass

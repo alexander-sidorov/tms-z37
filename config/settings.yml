@@ -16,6 +16,7 @@ default:
     - src/applications/blog/templates/
     - src/applications/hello/templates/
     - src/applications/landing/templates/
+    - src/applications/onboarding/templates/
     - src/project/templates/
   HOST: ""
   MODE_DEBUG: true
@@ -26,6 +27,7 @@ default:
   SENTRY_DSN: ""
   TEMPLATE_ENGINE: "Django"
   TEST_BROWSER: ""
+  TEST_BROWSER_HEADLESS: true
   VENV_SYNTHETIC: false
   WEB_CONCURRENCY: 0
 
