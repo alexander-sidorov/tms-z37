@@ -1,5 +1,5 @@
 const like = function (element, post_id) {
-    let api_url = "/b/post/" + (post_id * 1000) + "/like/";
+    let api_url = "/b/post/" + post_id + "/like/";
 
     fetch(api_url, {
         method: "POST",
