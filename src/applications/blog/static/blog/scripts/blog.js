@@ -1,19 +1,31 @@
-const like = function (element, post_id) {
-    let api_url = "/b/post/" + post_id + "/like/";
+const like = function (element, post_absolute_url) {
+    let api_url = `${post_absolute_url}like/`;
 
     fetch(api_url, {
         method: "POST",
     }).then(
-        resp => {
-            resp.json().then(
-                resp_payload => {
-                    if (resp_payload.ok) {
-                        element.textContent = resp_payload.nr_likes;
-                    } else {
-                        console.log(JSON.stringify(resp_payload));
+        response => {
+            if (response.status === 200) {
+                response.json().then(
+                    payload => {
+                        if (payload.ok) {
+                            element.textContent = payload.nr_likes;
+                        } else {
+                            console.log("ERROR (server declines request):", JSON.stringify(payload.reason));
+                        }
                     }
-                }
-            );
+                ).catch(
+                    error => {
+                        console.log("ERROR (while parsing server response):", error);
+                    }
+                );
+            } else {
+                console.log("ERROR (with response):", response.status, response.statusText);
+            }
+        }
+    ).catch(
+        error => {
+            console.log("ERROR (on fetch request):", error);
         }
     );
 }
