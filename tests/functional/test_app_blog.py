@@ -88,11 +88,43 @@ def test_two_users(browser, request):
     validate_number_of_posts(page, 0)
 
 
+@pytest.mark.functional
+@screenshot_on_failure
+def test_likes(browser, request):
+    page = AllPostsPage(browser, URL_BLOG)
+    validate_number_of_posts(page, 0)
+
+    sign_up(page.browser)
+
+    create_post(page, "test_likes")
+    validate_number_of_posts(page, 1)
+
+    post = get_post(page, 0)
+    validate_number_of_likes(post, 0)
+
+    like(post)
+    post = get_post(page, 0)
+    validate_number_of_likes(post, 1)
+
+    wipe_posts(page)
+
+
 def validate_number_of_posts(page: AllPostsPage, number: int) -> None:
     if not number:
         assert not page.posts
     else:
         assert len(page.posts) == number, "invalid posts amount"
+
+
+def validate_number_of_likes(post: WebElement, expected_number_of_likes: int) -> None:
+    likes = post.find_element_by_css_selector("span.likes")
+    actual_number_of_likes = int(likes.text)
+    assert actual_number_of_likes == expected_number_of_likes
+
+
+def like(post: WebElement):
+    likes = post.find_element_by_css_selector("span.likes")
+    likes.click()
 
 
 def get_post(page: AllPostsPage, number: int) -> WebElement:

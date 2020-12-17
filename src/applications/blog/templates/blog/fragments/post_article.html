@@ -19,6 +19,6 @@
 
   <span class="views">👁&nbsp;{{ object.nr_views }}</span>
 
-  <span class="likes">{{ object.nr_likes }}</span>
+  <span class="likes" onclick="like(this, '{{ object.get_absolute_url }}');">{{ object.nr_likes }}</span>
 
 </article>

@@ -1,7 +1,9 @@
 from typing import Dict
 
 from django import forms
+from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import ListView
@@ -62,3 +64,21 @@ class DeletePostView(DeleteView):
     http_method_names = ["post"]
     model = Post
     success_url = reverse_lazy("blog:all")
+
+
+class LikeView(View):
+    def post(self, request, *args, **kwargs):
+        payload = {"ok": False, "nr_likes": 0, "reason": "unknown reason"}
+
+        pk = self.kwargs.get("pk", 0)
+        post = Post.objects.filter(pk=pk).first()
+        if post:
+            post.nr_likes += 1
+            post.save()
+            post = Post.objects.get(pk=pk)
+
+            payload.update({"ok": True, "nr_likes": post.nr_likes, "reason": None})
+        else:
+            payload.update({"reason": "post not found"})
+
+        return JsonResponse(payload)

@@ -1,8 +1,10 @@
 {% extends "_base.html" %}
+{% load static %}
 
 {% block title %}/b/{{ object.pk }}{% endblock %}
 
 {% block main %}
+  <script src="{% static 'blog/scripts/blog.js' %}"></script>
 
   {% include "blog/fragments/post_article.html" %}
 
