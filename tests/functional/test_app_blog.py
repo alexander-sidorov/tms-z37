@@ -95,16 +95,20 @@ def test_likes(browser, request):
     validate_number_of_posts(page, 0)
 
     sign_up(page.browser)
-
-    create_post(page, "test_likes")
-    validate_number_of_posts(page, 1)
-
+    create_post(page, "xxx")
     post = get_post(page, 0)
+
+    validate_number_of_likes(post, 0)
+    like(post)
     validate_number_of_likes(post, 0)
 
-    like(post)
+    sign_up(page.browser)
     post = get_post(page, 0)
+    validate_number_of_likes(post, 0)
+    like(post)
     validate_number_of_likes(post, 1)
+    like(post)
+    validate_number_of_likes(post, 0)
 
     wipe_posts(page)
 
