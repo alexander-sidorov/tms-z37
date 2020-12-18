@@ -1,6 +1,7 @@
 from typing import Dict
 
 from django import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views import View
@@ -66,7 +67,7 @@ class DeletePostView(DeleteView):
     success_url = reverse_lazy("blog:all")
 
 
-class LikeView(View):
+class LikeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         payload = {"ok": False, "nr_likes": 0, "reason": "unknown reason"}
 
