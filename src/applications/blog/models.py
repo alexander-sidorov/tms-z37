@@ -25,7 +25,7 @@ class Post(models.Model):
     edited = models.BooleanField(default=False)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    likers = models.ManyToManyField(User, related_name="liked_posts")
+    likers = models.ManyToManyField(User, related_name="liked_posts", blank=True)
 
     @property
     def nr_likes(self):
