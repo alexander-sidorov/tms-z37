@@ -22,6 +22,12 @@ run: static
 	$(PYTHON) src/manage.py runserver
 
 
+.PHONY: run-api
+run-api:
+	$(call log, starting local FastAPI server)
+	$(RUN) uvicorn --port 8888 xxx.main:app
+
+
 .PHONY: run-prod
 run-prod:
 	$(call log, starting local web server)
