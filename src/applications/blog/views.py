@@ -69,6 +69,7 @@ class DeletePostView(DeleteView):
 
 class LikeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
+        user = self.request.user
         payload = {"ok": False, "nr_likes": 0, "reason": "unknown reason"}
 
         pk = self.kwargs.get("pk", 0)
@@ -79,11 +80,13 @@ class LikeView(LoginRequiredMixin, View):
         elif post.author == self.request.user:
             payload.update({"reason": "ne laikai svoi posty"})
         else:
-            post.likers.add(self.request.user)
+            if post.is_liked_by(user):
+                post.likers.remove(user)
+            else:
+                post.likers.add(user)
             post.save()
 
             post = Post.objects.get(pk=pk)
             payload.update({"ok": True, "nr_likes": post.nr_likes, "reason": None})
-
 
         return JsonResponse(payload)

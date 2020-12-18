@@ -31,6 +31,10 @@ class Post(models.Model):
     def nr_likes(self):
         return self.likers.count()
 
+    def is_liked_by(self, user: User) -> bool:
+        liked = Post.objects.filter(pk=self.pk, likers=user).exists()
+        return liked
+
     class Meta:
         ordering = ["-created_at"]
 
