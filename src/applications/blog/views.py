@@ -73,12 +73,14 @@ class LikeView(LoginRequiredMixin, View):
 
         pk = self.kwargs.get("pk", 0)
         post = Post.objects.filter(pk=pk).first()
-        if post:
-            post.nr_likes += 1
-            post.save()
-            post = Post.objects.get(pk=pk)
 
+        if post:
+            post.likers.add(self.request.user)
+            post.save()
+
+            post = Post.objects.get(pk=pk)
             payload.update({"ok": True, "nr_likes": post.nr_likes, "reason": None})
+
         else:
             payload.update({"reason": "post not found"})
 
