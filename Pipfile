@@ -18,10 +18,13 @@ delorean = "*"
 dj-database-url = "*"
 django = "*"
 dynaconf = { extras = ["yaml"], version = "*" }
+fastapi = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 pydantic = "*"
 sentry-sdk = "*"
+sqlalchemy = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 whitenoise = "*"
 
 [requires]

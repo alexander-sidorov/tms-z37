@@ -43,7 +43,7 @@ ci:
   HOST: "localhost"
   PORT: 8000
   SECRET_KEY: "1"
-  TEST_BROWSER: "chrome"
+  TEST_BROWSER: "firefox"
   WEB_CONCURRENCY: 2
 
 
