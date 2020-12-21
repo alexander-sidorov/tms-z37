@@ -25,7 +25,7 @@ run: static
 .PHONY: run-api
 run-api:
 	$(call log, starting local FastAPI server)
-	$(RUN) uvicorn --port 8888 xxx.main:app
+	$(RUN) uvicorn --port 8888 api.main:app
 
 
 .PHONY: run-prod
