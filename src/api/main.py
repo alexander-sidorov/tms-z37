@@ -11,13 +11,16 @@ from api.schemas import NewPostSchema
 from api.schemas import PostSchema
 from api.schemas import UserSchema
 
+API_URL = "/api/v1"
+
 app = FastAPI(
     description="example of API based on FastAPI and SqlAlchemy frameworks",
+    docs_url=f"{API_URL}/docs/",
+    openapi_url=f"{API_URL}/openapi.json",
+    redoc_url=f"{API_URL}/redoc/",
     title="Z37 API",
     version="1.0.0",
 )
-
-API_URL = "/api/v1"
 
 
 @app.post(f"{API_URL}/post/", status_code=status.HTTP_201_CREATED)

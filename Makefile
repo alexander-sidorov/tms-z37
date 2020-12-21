@@ -31,7 +31,7 @@ run-api:
 .PHONY: run-prod
 run-prod:
 	$(call log, starting local web server)
-	$(RUN) gunicorn --config="$(DIR_SCRIPTS)/gunicorn.conf.py" project.wsgi:application
+	$(RUN) gunicorn --config="$(DIR_SCRIPTS)/gunicorn.conf.py" project.asgi:application
 
 
 .PHONY: sh
