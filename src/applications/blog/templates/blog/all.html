@@ -1,8 +1,10 @@
 {% extends "_base.html" %}
+{% load static %}
 
 {% block title %}Blog App{% endblock %}
 
 {% block main %}
+  <script src="{% static 'blog/scripts/blog.js' %}"></script>
 
   {% if not user.is_anonymous %}
     {% with "Tell" as form_action_name %}
