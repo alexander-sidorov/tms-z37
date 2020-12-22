@@ -151,27 +151,6 @@ async def single_user(user_id: int) -> schemas.UserApiSchema:
     return response
 
 
-"""async def like(post_id: int) -> MyApiResponseSchema:
-    resp = MyApiResponseSchema()
-
-    try:
-        with closing(Session()) as session:
-            # post = session.query(Post).filter(Post.id == post_id).first()
-            if 1:
-                # post.nr_likes += 1
-                # session.add(post)
-                # session.commit()
-                like = LikeSchema(post_id=post_id, nr_likes=1)
-                resp.ok = True
-                resp.data = {"like": like}
-            else:
-                resp.errors = [f"post with id={post_id} was not found"]
-    except Exception as err:
-        resp.errors = [str(err), f"unhandled exception: {traceback.format_exc()}"]
-        raise
-
-    return resp"""
-
 if __name__ == "__main__" and settings.MODE_DEBUG:
     import uvicorn
 
