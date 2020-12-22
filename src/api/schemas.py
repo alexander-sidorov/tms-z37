@@ -21,14 +21,11 @@ class UserSchema(BaseModel):
 UserListSchema = List[UserSchema]
 
 
-class NewPostSchema(BaseModel):
+class PostSchema(BaseModel):
     author_id: int
     content: str
-
-
-class PostSchema(NewPostSchema):
-    id: int
-    nr_likes: int
+    id: Optional[int] = None
+    nr_likes: Optional[int] = 0
 
 
 PostListSchema = List[PostSchema]
@@ -44,10 +41,6 @@ class UserApiSchema(JsonApiSchema):
 
 class PostListApiSchema(JsonApiSchema):
     data: PostListSchema
-
-
-class NewPostApiSchema(JsonApiSchema):
-    data: NewPostSchema
 
 
 class PostApiSchema(JsonApiSchema):

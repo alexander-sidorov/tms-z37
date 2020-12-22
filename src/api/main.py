@@ -21,7 +21,7 @@ logger = configure_logging("api")
 
 
 @app.post(f"{API_URL}/blog/post/", status_code=status.HTTP_201_CREATED)
-async def new_post(payload: schemas.NewPostApiSchema) -> schemas.PostApiSchema:
+async def new_post(payload: schemas.PostApiSchema) -> schemas.PostApiSchema:
     logger.debug("creating new post")
 
     new_post = payload.data
