@@ -1,15 +1,8 @@
 from fastapi import FastAPI
 from fastapi import status
 
-from api.db import create_post
-from api.db import get_all_posts
-from api.db import get_all_users
-from api.db import get_single_post
-from api.db import get_single_user
-from api.schemas import JsonApiResponseSchema
-from api.schemas import NewPostSchema
-from api.schemas import PostSchema
-from api.schemas import UserSchema
+from api import db
+from api import schemas
 
 API_URL = "/api/v1"
 
@@ -23,80 +16,97 @@ app = FastAPI(
 )
 
 
-@app.post(f"{API_URL}/post/", status_code=status.HTTP_201_CREATED)
-async def new_post(post: NewPostSchema) -> JsonApiResponseSchema:
-    obj = create_post(post)
-    (obj, nr_likes) = get_single_post(obj.id)
-    payload = PostSchema(
+@app.post(f"{API_URL}/blog/post/", status_code=status.HTTP_201_CREATED)
+async def new_post(payload: schemas.NewPostApiSchema) -> schemas.PostApiSchema:
+    new_post = payload.data
+    obj = db.create_post(new_post)
+
+    (obj, nr_likes) = db.get_single_post(obj.id)
+
+    post = schemas.PostSchema(
         id=obj.id,
         author_id=obj.author_id,
         content=obj.content,
         nr_likes=nr_likes,
     )
-    resp = JsonApiResponseSchema(data=payload)
-    return resp
+
+    response = schemas.PostApiSchema(data=post)
+
+    return response
 
 
-@app.get(f"{API_URL}/post/")
-async def all_posts() -> JsonApiResponseSchema:
-    posts = get_all_posts()
-    payload = [
-        PostSchema(
+@app.get(f"{API_URL}/blog/post/")
+async def all_posts() -> schemas.PostListApiSchema:
+    objects = db.get_all_posts()
+
+    posts = [
+        schemas.PostSchema(
             id=post.id,
             author_id=post.author_id,
             content=post.content,
             nr_likes=nr_likes,
         )
-        for (post, nr_likes) in posts
+        for (post, nr_likes) in objects
     ]
-    resp = JsonApiResponseSchema(data=payload)
-    return resp
+
+    response = schemas.PostListApiSchema(data=posts)
+
+    return response
 
 
-@app.get(f"{API_URL}/post/{{post_id}}")
-async def single_post(post_id: int) -> JsonApiResponseSchema:
-    resp = JsonApiResponseSchema()
-    (post, nr_likes) = get_single_post(post_id)
-    if post:
-        resp.data = PostSchema(
-            id=post.id,
-            author_id=post.author_id,
-            content=post.content,
+@app.get(f"{API_URL}/blog/post/{{post_id}}")
+async def single_post(post_id: int) -> schemas.PostApiSchema:
+    response_kwargs = {}
+
+    (obj, nr_likes) = db.get_single_post(post_id)
+    if obj:
+        response_kwargs["data"] = schemas.PostSchema(
+            id=obj.id,
+            author_id=obj.author_id,
+            content=obj.content,
             nr_likes=nr_likes,
         )
     else:
-        resp.errors = [f"no post found with id={post_id}"]
-    return resp
+        response_kwargs["errors"] = [f"post with id={post_id} does not exist"]
+
+    response = schemas.PostApiSchema(**response_kwargs)
+
+    return response
 
 
 @app.get(f"{API_URL}/user/")
-async def all_users() -> JsonApiResponseSchema:
-    users = get_all_users()
-    payload = [
-        UserSchema(
+async def all_users() -> schemas.UserListApiSchema:
+    objects = db.get_all_users()
+
+    users = [
+        schemas.UserSchema(
             id=user.id,
             username=user.username,
             email=user.email,
         )
-        for user in users
+        for user in objects
     ]
-    resp = JsonApiResponseSchema(data=payload)
-    return resp
+
+    response = schemas.UserListApiSchema(data=users)
+
+    return response
 
 
 @app.get(f"{API_URL}/user/{{user_id}}")
-async def single_user(user_id: int) -> JsonApiResponseSchema:
-    resp = JsonApiResponseSchema()
-    user = get_single_user(user_id)
-    if user:
-        resp.data = UserSchema(
-            id=user.id,
-            username=user.username,
-            email=user.email,
+async def single_user(user_id: int) -> schemas.UserApiSchema:
+    response = schemas.UserApiSchema()
+
+    obj = db.get_single_user(user_id)
+    if obj:
+        response.data = schemas.UserSchema(
+            id=obj.id,
+            username=obj.username,
+            email=obj.email,
         )
     else:
-        resp.errors = [f"no user found with id={user_id}"]
-    return resp
+        response.errors = [f"user with id={user_id} does not exist"]
+
+    return response
 
 
 """async def like(post_id: int) -> MyApiResponseSchema:
