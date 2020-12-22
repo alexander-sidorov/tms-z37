@@ -19,7 +19,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
 
-from api.schemas import NewPostSchema
 from api.schemas import PostSchema
 
 database_url = os.getenv("DATABASE_URL", settings.DATABASE_URL)
@@ -71,7 +70,7 @@ def using_session(func: Callable):
 
 
 @using_session
-def create_post(session: Session, data: NewPostSchema) -> Post:
+def create_post(session: Session, data: PostSchema) -> Post:
     post = Post(
         author_id=data.author_id,
         content=data.content,

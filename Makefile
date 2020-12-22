@@ -19,13 +19,14 @@ test:
 .PHONY: run
 run: static
 	$(call log, starting local web server)
-	$(PYTHON) src/manage.py runserver
-
-
-.PHONY: run-api
-run-api:
-	$(call log, starting local FastAPI server)
-	$(RUN) uvicorn --port 8888 api.main:app
+	$(RUN) uvicorn \
+		--host 0.0.0.0 \
+		--log-level debug \
+		--port 8000 \
+		--reload \
+		--workers 1 \
+		--ws none \
+		project.asgi:application
 
 
 .PHONY: run-prod

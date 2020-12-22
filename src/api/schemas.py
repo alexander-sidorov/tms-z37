@@ -7,9 +7,9 @@ from typing import Union
 from pydantic.main import BaseModel
 
 
-class JsonApiResponseSchema(BaseModel):
+class JsonApiSchema(BaseModel):
     errors: Optional[List[Text]] = None
-    data: Union[Optional[Dict], List] = None
+    data: Union[List, Optional[Dict]] = None
 
 
 class UserSchema(BaseModel):
@@ -18,11 +18,30 @@ class UserSchema(BaseModel):
     email: str
 
 
-class NewPostSchema(BaseModel):
+UserListSchema = List[UserSchema]
+
+
+class PostSchema(BaseModel):
     author_id: int
     content: str
+    id: Optional[int] = None
+    nr_likes: Optional[int] = 0
 
 
-class PostSchema(NewPostSchema):
-    id: int
-    nr_likes: int
+PostListSchema = List[PostSchema]
+
+
+class UserListApiSchema(JsonApiSchema):
+    data: UserListSchema
+
+
+class UserApiSchema(JsonApiSchema):
+    data: UserSchema
+
+
+class PostListApiSchema(JsonApiSchema):
+    data: PostListSchema
+
+
+class PostApiSchema(JsonApiSchema):
+    data: PostSchema
