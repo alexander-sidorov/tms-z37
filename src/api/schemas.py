@@ -26,6 +26,7 @@ class PostSchema(BaseModel):
     content: str
     id: Optional[int] = None
     nr_likes: Optional[int] = 0
+    nr_views: Optional[int] = 0
 
 
 PostListSchema = List[PostSchema]

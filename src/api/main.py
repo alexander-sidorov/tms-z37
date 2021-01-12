@@ -60,6 +60,7 @@ async def all_posts() -> schemas.PostListApiSchema:
             author_id=post.author_id,
             content=post.content,
             nr_likes=nr_likes,
+            nr_views=post.nr_views,
         )
         for (post, nr_likes) in objects
     ]
