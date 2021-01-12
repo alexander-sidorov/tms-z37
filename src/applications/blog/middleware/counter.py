@@ -6,6 +6,9 @@ class CounterMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest):
+        if request.method.lower() != "get":
+            return self.get_response(request)
+
         if request.path.startswith("/b"):
             from applications.blog.models import Post
 
